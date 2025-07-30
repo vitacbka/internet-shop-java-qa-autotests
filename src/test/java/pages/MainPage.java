@@ -1,6 +1,5 @@
 package pages;
 
-import com.codeborne.selenide.BaseElementsCollection;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.*;
@@ -10,9 +9,7 @@ public class MainPage {
 
     public final SelenideElement
             mainPageTitle = $(".site-text"),
-            headerContactInfo = $("#custom_html-2 > div"),
-            tabsInHeader = $("#menu-primary-menu"),
-            searchInputField = $(".search-form input[type='text']"),
+
             booksSlide = $("#accesspress_storemo-2 .widget-title"),
             tabletsSlide = $("#accesspress_storemo-3 .widget-title"),
             camerasSlide = $("#accesspress_storemo-4 .widget-title"),
