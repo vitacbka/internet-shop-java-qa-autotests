@@ -1,10 +1,7 @@
 package tests;
 
 import com.codeborne.selenide.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import pages.BooksCategoryPage;
 import pages.CamerasCategoryTitle;
 import pages.MainPage;
@@ -20,10 +17,15 @@ public class MainPageTests {
     TabletsCategoryPage tabletsCategoryPage = new TabletsCategoryPage();
     CamerasCategoryTitle camerasCategoryTitle = new CamerasCategoryTitle();
 
-    @BeforeEach
-    void setup() {
+    @BeforeAll
+    static void setupAll() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
+
+    }
+
+    @BeforeEach
+    void setup() {
         mainPage.openMainPage();
     }
 

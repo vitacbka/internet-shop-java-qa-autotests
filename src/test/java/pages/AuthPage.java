@@ -13,7 +13,7 @@ public class AuthPage {
             usernameInputField = $("#username"),
             passwordInputField = $("#password"),
             myAccountPageTitle = $(".post-title"),
-            loginPageTitle = $("label[for='username']"),
+            loginPageTitle = $(".current"),
             passwordTitleText = $("label[for='password']"),
             loginButton = $(".woocommerce-button"),
             registrationBtn = $(".custom-register-button"),

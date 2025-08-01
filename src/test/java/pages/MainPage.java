@@ -9,7 +9,6 @@ public class MainPage {
 
     public final SelenideElement
             mainPageTitle = $(".site-text"),
-
             booksSlide = $("#accesspress_storemo-2 .widget-title"),
             tabletsSlide = $("#accesspress_storemo-3 .widget-title"),
             camerasSlide = $("#accesspress_storemo-4 .widget-title"),

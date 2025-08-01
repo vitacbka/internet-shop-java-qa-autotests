@@ -1,26 +1,32 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import pages.HeaderPage;
-import pages.MainPage;
+import org.junit.jupiter.api.*;
+import pages.*;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static testdata.MainPageTestData.EXPECTED_HEADER_TEXT;
+import static testdata.AuthPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
+import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
+import static testdata.CatalogPageTestData.CATALOG_PAGE_TITLE;
+import static testdata.MainPageTestData.*;
 
 public class HeaderTests {
     MainPage mainPage = new MainPage();
     HeaderPage header = new HeaderPage();
+    CatalogPage catalogPage = new CatalogPage();
+    AuthPage authPage = new AuthPage();
+    CartPage cartPage = new CartPage();
+
+    @BeforeAll
+    static void allSetUp() {
+        Configuration.browser = "chrome";
+        Configuration.browserSize = "1920x1080";
+    }
 
     @BeforeEach
     void setup() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
         mainPage.openMainPage();
     }
 
@@ -30,21 +36,49 @@ public class HeaderTests {
     }
 
     @Test
-    @DisplayName("Contact information should be visible at header")
+    @DisplayName("Header tabs should be visible at main page")
     void contactInformationShouldBeVisibleAtHeaderTest() {
-        header
-                .headerContactInfo
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HEADER_TEXT));
+        header.verifyMainTabsAreVisible();
     }
 
     @Test
-    @DisplayName("Header menu tabs should be visible at main page")
+    @DisplayName("Click on home tab should open main page")
     void mainMenuTabsShouldBeVisibleTest() {
-        header.
-                tabsInHeader
-                .shouldBe(visible);
+        header.homeTab.click();
+        mainPage.mainPageTitle.shouldBe(visible, text(EXPECTED_TITLE_TEXT));
     }
 
+    @Test
+    @DisplayName("Click on catalog tab should open catalog page")
+    void catalogMenuTabsShouldBeVisibleTest() {
+        header
+                .catalogTab.click();
+        catalogPage
+                .catalogPageTitle.shouldBe(visible, text(CATALOG_PAGE_TITLE));
+    }
 
+    @Test
+    @DisplayName("Click on my account tab should open my account page")
+    void clickOnMyAccountHeaderTabTest() {
+        header.accountTab.click();
+        authPage.loginPageTitle.shouldBe(visible, text(EXPECTED_MY_ACCOUNT_TITLE));
+    }
+
+    @Test
+    @DisplayName("Click on cart tab should open cart page")
+    void clickOnCartHeaderTabTest() {
+        header
+                .cartTab.shouldBe(visible).click();
+        cartPage
+                .cartPageTitle.shouldBe(visible, text(EXPECTED_CART_PAGE_TITLE));
+    }
+
+    @Test
+    @DisplayName("Click on place tab should open cart page")
+    void clickOnPlaceHeaderTabTest() {
+        header
+                .placeAnOrder.shouldBe(visible).click();
+        cartPage
+                .cartPageTitle.shouldBe(visible, text(EXPECTED_CART_PAGE_TITLE));
+    }
 }
