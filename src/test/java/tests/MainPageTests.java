@@ -6,9 +6,16 @@ import pages.BooksCategoryPage;
 import pages.CamerasCategoryTitle;
 import pages.MainPage;
 import pages.TabletsCategoryPage;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static readproperties.ConfigProvider.BASE_URL;
 import static testdata.MainPageTestData.*;
 
 public class MainPageTests {
@@ -21,7 +28,6 @@ public class MainPageTests {
     static void setupAll() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
-
     }
 
     @BeforeEach
@@ -84,18 +90,6 @@ public class MainPageTests {
                 .camerasPageTitle
                 .shouldBe(visible)
                 .shouldHave(text(EXPECTED_CAMERAS_PAGE_TITLE));
-    }
-
-
-
-    @Test
-    @DisplayName("Contact information should be visible at footer")
-    void contactInformationShouldBeVisibleTest() {
-        mainPage
-                .footerContactInfo
-                .scrollTo()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_FOOTER_TEXT));
     }
 
     @Test

@@ -7,6 +7,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class TvCategoryPage {
+
     public final SelenideElement
     tvCategoryTitle = $("header#title_bread_wrap h1");
 
@@ -15,5 +16,4 @@ public class TvCategoryPage {
                 .shouldBe(visible)
                 .shouldHave(text(expectedTitle));
     }
-
 }

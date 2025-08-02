@@ -13,7 +13,8 @@ public class HeaderPage {
             catalogTab = $("li#menu-item-46 a"),
             accountTab = $("li#menu-item-30 a"),
             cartTab = $("li#menu-item-29 a"),
-            placeAnOrder = $("li#menu-item-31 a");
+            placeAnOrder = $("li#menu-item-31 a"),
+            headerContactInfo = $("#custom_html-2");
     
 
     public SelenideElement
@@ -32,8 +33,6 @@ public class HeaderPage {
     public SelenideElement
             booksLink = $("li#menu-item-180 a"),
             clothesLink = $("li#menu-item-48 a");
-
-
 
 
     public void verifyMainTabsAreVisible() {

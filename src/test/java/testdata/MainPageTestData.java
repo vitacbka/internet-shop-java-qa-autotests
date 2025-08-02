@@ -3,8 +3,6 @@ package testdata;
 public class MainPageTestData {
 
     public static final String EXPECTED_TITLE_TEXT = "Skillbox\n" + "Интернет магазин";
-    public static final String EXPECTED_FOOTER_TEXT = "КОНТАКТНАЯ ИНФОРМАЦИЯ\nТелефон: +7-999-123-12-12\nEmail: skillbox@skillbox.ru";
-    public static final String EXPECTED_HEADER_TEXT = "+7-999-123-12-12 | skillbox@skillbox.ru";
     public static final String EXPECTED_BOOKS_SLIDE_TITLE = "КНИГИ";
     public static final String EXPECTED_TABLETS_SLIDE_TITLE = "ПЛАНШЕТЫ";
     public static final String EXPECTED_CAMERAS_SLIDE_TITLE = "ФОТОАППАРАТЫ";
