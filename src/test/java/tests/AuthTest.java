@@ -6,8 +6,7 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
 import pages.AuthPage;
 
-import static com.codeborne.selenide.Condition.be;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static testdata.AuthPageTestData.*;
 

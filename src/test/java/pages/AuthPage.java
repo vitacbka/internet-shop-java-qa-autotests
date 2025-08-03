@@ -26,7 +26,8 @@ public class AuthPage {
             invalidUserNameOrPasswordMessage = $(".woocommerce-error"),
             helloMessageText = $(".woocommerce-MyAccount-content p"),
             logoutButton = $(".woocommerce-MyAccount-navigation a[href*='logout']"),
-            invalidCredentialsErrorMessage = $(".woocommerce-error");
+            invalidCredentialsErrorMessage = $(".woocommerce-error"),
+            passwordRecoveryLink = $("a[href*='lost-password']");
 
     public void openAuthPage() {
         open(MY_ACCOUNT_PAGE_URL);
