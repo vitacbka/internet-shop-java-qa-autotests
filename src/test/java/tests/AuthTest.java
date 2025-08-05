@@ -58,7 +58,6 @@ public class AuthTest {
                 .logoutButton
                 .shouldBe(visible)
                 .click();
-
         authPage
                 .usernameInputField
                 .shouldBe(visible);
