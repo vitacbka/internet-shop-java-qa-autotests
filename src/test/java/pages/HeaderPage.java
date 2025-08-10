@@ -14,7 +14,10 @@ public class HeaderPage {
             accountTab = $("li#menu-item-30 a"),
             cartTab = $("li#menu-item-29 a"),
             placeAnOrder = $("li#menu-item-31 a"),
-            headerContactInfo = $("#custom_html-2");
+            headerContactInfo = $("#custom_html-2"),
+            loginLinkButton = $(".account"),
+            welcomeTextAtHeader = $(".welcome-user"),
+            logoutLinkButton = $(".logout");
     
 
     public SelenideElement
@@ -44,5 +47,15 @@ public class HeaderPage {
         placeAnOrder.shouldBe(visible);
     }
 
+    public void clickLogoutButton() {
+        logoutLinkButton.click();
+    }
 
+    public SelenideElement getWelcomeTextAtHeader() {
+        return welcomeTextAtHeader;
+    }
+
+    public SelenideElement getLoginLinkButton() {
+        return loginLinkButton;
+    }
 }

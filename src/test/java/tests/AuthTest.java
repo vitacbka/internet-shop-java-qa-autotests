@@ -1,30 +1,33 @@
 package tests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
-import pages.AuthPage;
+import pages.MyAccountPage;
 
-import static com.codeborne.selenide.Condition.be;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static testdata.AuthPageTestData.*;
+import static readproperties.ConfigProvider.*;
+import static testdata.MyAccountPageTestData.*;
+import static testdata.HeaderTestData.EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT;
 
 import helpers.Cookies;
+import pages.HeaderPage;
 
 public class AuthTest {
-    AuthPage authPage = new AuthPage();
+    MyAccountPage myAccount = new MyAccountPage();
     Cookies cookies = new Cookies();
+    HeaderPage header = new HeaderPage();
 
     @BeforeAll
     static void setUpAll() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
     }
+
     @BeforeEach
     void setup() {
-        authPage.openAuthPage();
+        myAccount.openAuthPage();
     }
 
     @AfterEach
@@ -34,128 +37,144 @@ public class AuthTest {
 
     @Test
     @DisplayName("Login page title should be displayed")
-    void loginPageTitleShouldBeDisplayed() {
-        authPage
-                .loginPageTitle
-                .shouldBe(visible);
+    void loginPageTitleShouldBeDisplayedTest() {
+        myAccount
+                .getMyAccountPageTitle()
+                .shouldBe(visible)
+                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
     }
 
     @Test
-    @DisplayName("User should be logged in with valid credentials without remember me checkbox and should be displayed Hello message title")
+    @DisplayName("Welcome text at header should be displayed after user is login")
+    void welcomeTextAtHeaderShouldBeDisplayedAfterUserIsLogin() {
+        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        header.getWelcomeTextAtHeader()
+                .shouldBe(visible)
+                .shouldHave(text(EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT));
+    }
+
+    @Test
+    @DisplayName("User should be logged with valid username and walid password without remember me checkbox and should be displayed Hello message title")
     void userShouldBeLoggedInTest() {
-        authPage.userLoginWithValidCredentialsViaUsername();
-
-        authPage
-                .helloMessageText
+        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.clickLogoutButton();
+        myAccount.getMyAccountPageTitle()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_HELLO_MESSAGE_TEXT));
+                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
+        myAccount.getHelloMessage()
+                        .shouldNotBe(visible);
     }
 
     @Test
-    @DisplayName("User should be logged out after click link logout link at my account page")
+    @DisplayName("Login button at header should be displayed after user logout")
+    void loginButtonLinkShouldBeDisplayedAfterUserLogout() {
+        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.clickLogoutButton();
+        myAccount.getMyAccountPageTitle()
+                .shouldBe(visible)
+                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
+        header.getLoginLinkButton()
+                .shouldBe(visible)
+                .shouldHave(text("Войти"));
+    }
+
+    @Test
+    @DisplayName("Welcome message should not be displayed after user logout")
     void logoutTest() {
-        authPage.userLoginWithValidCredentialsViaUsername();
-        authPage
-                .logoutButton
-                .shouldBe(visible)
-                .click();
-
-        authPage
-                .usernameInputField
+        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getHelloMessage()
                 .shouldBe(visible);
-        authPage
-                .passwordInputField
-                .shouldBe(visible);
-
-        authPage
-                .loginButton
-                .shouldBe(visible)
-                .shouldHave(Condition.text("Войти"));
-
-        authPage
-                .helloMessageText
-                .shouldNot(be(visible));
+        myAccount.clickLogoutButton();
+        myAccount.getHelloMessage()
+                .shouldNotBe(visible);
     }
 
     @Test
     @DisplayName("Password is required error message should be displayed when user does not enter password")
     void passwordIsRequiredErrorMessageShouldBeDisplayedTest() {
-        authPage.tryLoginWithEmptyPassword();
-        authPage
-                .passwordIsRequiredError
+        myAccount.enterCredentials(VALID_USER_LOGIN, "");
+        myAccount.clickLoginButton();
+        myAccount.getPasswordIsRequiredError()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_PASSWORD_IS_REQUIRED_ERROR));
+                .shouldHave(text(EXPECTED_PASSWORD_IS_REQUIRED_ERROR));
     }
 
     @Test
     @DisplayName("Username is required error message should be displayed when user does not enter username")
     void usernameIsRequiredErrorMessageShouldBeDisplayedTest() {
-        authPage.tryLoginWitEmptyUsernameOrEmail();
-        authPage
-                .usernameIsRequiredError
+        myAccount.enterCredentials("", VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.geUsernameIsRequiredError()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
+                .shouldHave(text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
     }
 
     @Test
     @DisplayName("Error message should be displayed when user click login button with empty username and empty password")
-    void errorMessageShouldBeDisplayedWhenClickLoginButtonWithoputCredentialsTest() {
-        authPage.loginButton
+    void errorMessageShouldBeDisplayedWhenClickLoginButtonWithoutCredentialsTest() {
+        myAccount.clickLoginButton();
+        myAccount.geUsernameIsRequiredError()
                 .shouldBe(visible)
-                .click();
-        authPage.
-                usernameIsRequiredError
-                .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
+                .shouldHave(text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
     }
 
     @Test
     @DisplayName("Error message should be displayed when user enter invalid password")
     void errorMessageShouldBeDisplayedWhenUserEnterInvalidPasswordTest() {
-        authPage.loginWithInvalidPassword();
-        authPage
-                .passwordIsRequiredError
+        myAccount.enterCredentials(VALID_USER_LOGIN, INVALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getPasswordIsRequiredError()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_INVALID_PASSWORD_ERROR));
+                .shouldHave(text(EXPECTED_INVALID_PASSWORD_ERROR));
     }
 
     @Test
-    @DisplayName("Error message should be displayed when user login with invalid credentials")
+    @DisplayName("Error message should be displayed when user login with invalid username and invalid password")
     void errorMessageShouldBeDisplayedWhenUserLoginWithInvalidCredentialsTest() {
-        authPage.loginWithInvalidUsernameAndInvalidPassword();
-        authPage.
-                invalidCredentialsErrorMessage
+        myAccount.enterCredentials(INVALID_USER_LOGIN, INVALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getInvalidCredentialsErrorMessage()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_INVALID_CREDENTIALS_ERROR_MESSAGE));
+                .shouldHave(text(EXPECTED_INVALID_CREDENTIALS_ERROR_MESSAGE));
     }
 
     @Test
     @DisplayName("User should be logged in with valid email and valid password")
     void userShouldBeLoggedInWithValidCredentialsViaEmailTest() {
-        authPage.loginWithValidEmailAndValidPassowrd();
-        authPage
-                .helloMessageText
+        myAccount.enterCredentials(VALID_USER_EMAIL, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getHelloMessage()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+    }
+
+    @Test
+    @DisplayName("Error message should be displayed after user has input invalid email and valid password and click login button")
+    void errorMessageShouldBeDisplayedAfterUserHasInputInvalidEmailTest() {
+        myAccount.enterCredentials(INVALID_USER_EMAIL, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getUnknownEmailAddressErrorMessage()
+                .shouldBe(visible)
+                .shouldHave(text(EXPECTED_UNKNOWN_EMAIL_ADDRESS_ERROR));
+
     }
 
     @Test
     @DisplayName("User should be logged in with valid credentials with remember me checkbox")
     void userShouldBeLoggedInWithValidCredentialsWithRememberMeCheckboxTest() {
-        authPage.loginWithValidCredentialsWithRememberMeCheckbox();
-
+        myAccount.enterCredentialsWithRememberMeCheckbox(VALID_USER_EMAIL, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
         cookies.saveCookies();
-
         closeWebDriver();
-
-        authPage.openAuthPage();
-        cookies.deleteCookies();
+        myAccount.openAuthPage();
         cookies.pasteCookies();
-
         Selenide.refresh();
-
-        authPage.helloMessageText
+        myAccount.getHelloMessage()
                 .shouldBe(visible)
-                .shouldHave(Condition.text(EXPECTED_HELLO_MESSAGE_TEXT));
+                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
     }
 }

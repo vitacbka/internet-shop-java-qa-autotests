@@ -42,7 +42,7 @@ public class MainPageTests {
 
     @Test
     @DisplayName("Main page title should be visible")
-    void mainPageTitleshouldBEVisibleTest() {
+    void mainPageTitleShouldBEVisibleTest() {
         mainPage
                 .mainPageTitle
                 .shouldBe(visible)

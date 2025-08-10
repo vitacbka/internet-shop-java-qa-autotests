@@ -7,7 +7,7 @@ import pages.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static testdata.AuthPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
+import static testdata.MyAccountPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
 import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
 import static testdata.CatalogPageTestData.CATALOG_PAGE_TITLE;
 import static testdata.HeaderTestData.EXPECTED_HEADER_CONTACT_INFO;
@@ -17,7 +17,7 @@ public class HeaderTests {
     MainPage mainPage = new MainPage();
     HeaderPage header = new HeaderPage();
     CatalogPage catalogPage = new CatalogPage();
-    AuthPage authPage = new AuthPage();
+    MyAccountPage authPage = new MyAccountPage();
     CartPage cartPage = new CartPage();
 
     @BeforeAll
@@ -62,7 +62,7 @@ public class HeaderTests {
     @DisplayName("Click on my account tab should open my account page")
     void clickOnMyAccountHeaderTabTest() {
         header.accountTab.click();
-        authPage.loginPageTitle.shouldBe(visible, text(EXPECTED_MY_ACCOUNT_TITLE));
+        authPage.MyAccountPageTitle.shouldBe(visible, text(EXPECTED_MY_ACCOUNT_TITLE));
     }
 
     @Test
