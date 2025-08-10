@@ -13,4 +13,5 @@ public class MainPageTestData {
     public static final String EXPECTED_BOOKS_PAGE_TITLE = "КНИГИ";
     public static final String EXPECTED_TABLETS_PAGE_TITLE = "ПЛАНШЕТЫ";
     public static final String EXPECTED_CAMERAS_PAGE_TITLE = "ФОТО/ВИДЕО";
+
 }

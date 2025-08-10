@@ -10,8 +10,8 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static testdata.MyAccountPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
 import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
 import static testdata.CatalogPageTestData.CATALOG_PAGE_TITLE;
-import static testdata.HeaderTestData.EXPECTED_HEADER_CONTACT_INFO;
-import static testdata.MainPageTestData.*;
+import static testdata.HeaderTestData.HEADER_CONTACT_INFO;
+import static testdata.MainPageTestData.EXPECTED_TITLE_TEXT;
 
 public class HeaderTests {
     MainPage mainPage = new MainPage();
@@ -86,6 +86,6 @@ public class HeaderTests {
     @Test
     @DisplayName("Contact information should be displayed in header")
     void checkContactInfoInHeader() {
-        header.headerContactInfo.shouldBe(visible, text(EXPECTED_HEADER_CONTACT_INFO));
+        header.headerContactInfo.shouldBe(visible, text(HEADER_CONTACT_INFO));
     }
 }
