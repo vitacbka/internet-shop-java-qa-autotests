@@ -42,5 +42,9 @@ public class CartPage {
         cartIsEmptyMessage.shouldBe(visible, Duration.ofSeconds(5));
     }
 
+    public SelenideElement getCartPageTitle() {
+        return cartPageTitle;
+    }
+
 
 }

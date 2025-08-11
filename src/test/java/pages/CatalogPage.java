@@ -7,4 +7,8 @@ import static com.codeborne.selenide.Selenide.$;
 public class CatalogPage {
 
     public SelenideElement catalogPageTitle = $(".entry-title.ak-container");
+
+    public SelenideElement getCatalogPageTitle() {
+        return catalogPageTitle;
+    }
 }

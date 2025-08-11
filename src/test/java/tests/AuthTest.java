@@ -177,4 +177,18 @@ public class AuthTest {
                 .shouldBe(visible)
                 .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
     }
+
+    @Test
+    @DisplayName("User should be logout after click logout button in header")
+    void userShouldBeLogoutAfterClickLogoutButtonInHeader() {
+        myAccount.enterCredentialsWithRememberMeCheckbox(VALID_USER_EMAIL, VALID_USER_PASSWORD);
+        myAccount.clickLoginButton();
+        myAccount.getHelloMessage()
+                .shouldBe(visible)
+                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+        header.clickLogoutButton();
+        header.getLoginButtonText()
+                .shouldBe(visible)
+                .shouldHave(text("Войти"));
+    }
 }
