@@ -2,6 +2,10 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
@@ -17,8 +21,7 @@ public class CartPage {
             itemInCart = $(".woocommerce-cart-form__cart-item"),
             toPayPrice = $("tr[class='order-total'] bdi:nth-child(1)"),
             couponInputField = $("#coupon_code"),
-            toPayTitle = $("tr[class='order-total'] th"),
-            deleteCouponButton = $(".woocommerce-remove-coupon"),
+            removeCouponButton = $(".woocommerce-remove-coupon"),
             successfulCouponMessage = $("div[role='alert']"),
             errorCouponMessage = $("ul[role='alert'] li"),
             doubleApplyCouponMessage = $("ul[role='alert'] li"),
@@ -55,5 +58,22 @@ public class CartPage {
 
     public void clickOnApplyCouponButton() {
         applyCouponButton.shouldBe(visible).click();
+    }
+
+    public void clickRemoveCouponButton() {
+        removeCouponButton.click();
+    }
+
+    public double getTotalPriceAsDouble() {
+        String priceText = toPayPrice.text()
+                .replaceAll("[^\\d,]", "")
+                .replace(",", ".");
+
+        return Double.parseDouble(priceText);
+    }
+
+
+    public void waitForPriceChange(double oldPrice) {
+        toPayPrice.shouldNotHave(text(String.valueOf(oldPrice)), Duration.ofSeconds(10));
     }
 }
