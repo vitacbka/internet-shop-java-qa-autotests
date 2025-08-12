@@ -23,26 +23,15 @@ import static readproperties.ConfigProvider.BASE_URL;
 import static testdata.MainPageTestData.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class MainPageTests {
+public class MainPageTests extends BaseTest{
     MainPage mainPage = new MainPage();
     BooksCategoryPage booksCategoryPage = new BooksCategoryPage();
     TabletsCategoryPage tabletsCategoryPage = new TabletsCategoryPage();
     CamerasCategoryTitle camerasCategoryTitle = new CamerasCategoryTitle();
 
-    @BeforeAll
-    static void setupAll() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-    }
-
     @BeforeEach
     void setup() {
         mainPage.openMainPage();
-    }
-
-    @AfterEach
-    void teardown() {
-        closeWebDriver();
     }
 
     private Stream<Arguments> slideDataProvider() {
@@ -61,22 +50,16 @@ public class MainPageTests {
         pageTitleElement.shouldBe(Condition.visible).shouldHave(Condition.text(expectedPageTitle));
     }
 
-
-
     @Test
-    @DisplayName("Main page title should be visible")
-    void mainPageTitleShouldBEVisibleTest() {
-        mainPage
-                .mainPageTitle
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_TITLE_TEXT));
+    @DisplayName("Main page title should be visible and url should be valid")
+    void mainPageTitleShouldBeVisibleAndUrlShouldBeValidTest() {
+        mainPage.isOnMainPage();
     }
 
     @Test
     @DisplayName("Sale label should be visible at sale category")
     void saleLabelShouldBeVisibleTest() {
         mainPage.scrollToElement(mainPage.saleCategoryTitle, EXPECTED_SALE_CATEGORY_TITLE);
-
         mainPage
                 .saleLabels
                 .filterBy(Condition.visible)

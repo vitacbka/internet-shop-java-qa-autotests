@@ -3,7 +3,7 @@ package testdata;
 public class MainPageTestData {
 
     public static final String
-            EXPECTED_TITLE_TEXT = "Skillbox\nИнтернет магазин",
+            EXPECTED_MAIN_PAGE_TITLE_TEXT = "Skillbox\nИнтернет магазин",
             EXPECTED_BOOKS_SLIDE_TITLE = "КНИГИ",
             EXPECTED_TABLETS_SLIDE_TITLE = "ПЛАНШЕТЫ",
             EXPECTED_CAMERAS_SLIDE_TITLE = "ФОТОАППАРАТЫ",

@@ -1,12 +1,19 @@
 package pages;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+
+import java.util.Objects;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.url;
 import static readproperties.ConfigProvider.BASE_URL;
+import static readproperties.ConfigProvider.BOOKS_CATEGORY_URL;
+import static testdata.MainPageTestData.EXPECTED_BOOKS_PAGE_TITLE;
+import static testdata.MainPageTestData.EXPECTED_MAIN_PAGE_TITLE_TEXT;
 
 public class MainPage {
 
@@ -27,6 +34,10 @@ public class MainPage {
         open(BASE_URL);
     }
 
+    public void isOnMainPage() {
+        webdriver().shouldHave(url(BASE_URL));
+        mainPageTitle.shouldBe(visible).shouldHave(text(EXPECTED_MAIN_PAGE_TITLE_TEXT));
+    }
 
     public void clickOnSlide(SelenideElement element, String expectedTitle) {
         element.shouldBe(visible).shouldHave(text(expectedTitle)).click();

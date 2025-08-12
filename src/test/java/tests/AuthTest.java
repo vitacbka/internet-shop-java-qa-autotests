@@ -14,25 +14,14 @@ import static testdata.HeaderTestData.EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT;
 import helpers.Cookies;
 import pages.HeaderPage;
 
-public class AuthTest {
+public class AuthTest extends BaseTest{
     MyAccountPage myAccount = new MyAccountPage();
     Cookies cookies = new Cookies();
     HeaderPage header = new HeaderPage();
 
-    @BeforeAll
-    static void setUpAll() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-    }
-
     @BeforeEach
     void setup() {
         myAccount.openAuthPage();
-    }
-
-    @AfterEach
-    void teardown() {
-        closeWebDriver();
     }
 
     @Test

@@ -1,7 +1,8 @@
 package pages;
 
 import com.codeborne.selenide.SelenideElement;
-
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -13,4 +14,16 @@ public class PasswordRecoveryPage {
             emailOrUsernameInputField = $("#user_login"),
             successPasswordRecoverySendToEmailMessage = $(".woocommerce-message"),
             errorPasswordRecoverToEmailMessage = $x("//li[contains(text(), 'Неверное')]");
-}
+
+    public void clickResetPassword() {
+        resetPasswordButton.click();
+    }
+    public void checkMessage(SelenideElement element, String message) {
+        element.shouldBe(visible).shouldHave(text(message));
+    }
+
+    public void enterUsernameOrEmail (SelenideElement element, String username) {
+        element.setValue(username);
+        clickResetPassword();
+    }
+ }

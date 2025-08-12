@@ -7,56 +7,61 @@ import pages.PasswordRecoveryPage;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
 import static readproperties.ConfigProvider.*;
+import static testdata.MyAccountPageTestData.EXPECTED_PASSWORD_RECOVERY_TITLE;
+import static testdata.PasswordRecoveryTestData.EXPECTED_INVALID_USERNAME_OR_EMAIL_ERROR_MESSAGE;
+import static testdata.PasswordRecoveryTestData.EXPECTED_SUCCESSFUL_SEND_PASSWORD_MESSAGE;
 
-public class PasswordRecoveryTests {
-    MyAccountPage myAccount = new MyAccountPage();
+public class PasswordRecoveryTests extends BaseTest{
     PasswordRecoveryPage passwordRecovery = new PasswordRecoveryPage();
 
-    @BeforeAll
-    static void setUpAll() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-    }
     @BeforeEach
     void setup() {
-        myAccount.openAuthPage();
+        open(PASSWORD_RECOVERY_URL);
     }
 
-    @AfterEach
-    void teardown() {
-        closeWebDriver();
+    @Test
+    @DisplayName("Page title should be displayed")
+    void pageTitleShouldBeDisplayedTest() {
+        passwordRecovery.passwordRecoveryPageTitle.
+                shouldBe(visible)
+                .shouldHave(text(EXPECTED_PASSWORD_RECOVERY_TITLE));
     }
 
-//    @Test
-//    @DisplayName("Password recovery should be send to user valid email")
-//    void passwordRecoveryShouldBeSendToValidEmailTest() {
-//        myAccount.passwordRecoveryLink.shouldBe(visible).click();
-//        passwordRecovery.passwordRecoveryPageTitle.shouldBe(visible, text(EXPECTED_PASSWORD_RECOVERY_PAGE_TITLE));
-//        passwordRecovery.emailOrUsernameInputField.shouldBe(visible).sendKeys(VALID_USER_EMAIL);
-//        passwordRecovery.resetPasswordButton.shouldBe(visible).click();
-//        passwordRecovery.successPasswordRecoverySendToEmailMessage.shouldBe(visible, text(EXPECTED_SUCCESSFUL_PASSWORD_RECOVERY_SEND_EMAIL_MESSAGE));
-//    }
-//
-//    @Test
-//    @DisplayName("Password recovery should be send to user valid username")
-//    void passwordRecoveryShouldBeSendToValidUsernameTest() {
-//        myAccount.passwordRecoveryLink.shouldBe(visible).click();
-//        passwordRecovery.passwordRecoveryPageTitle.shouldBe(visible, text(EXPECTED_PASSWORD_RECOVERY_PAGE_TITLE));
-//        passwordRecovery.emailOrUsernameInputField.shouldBe(visible).sendKeys("javaQaTester");
-//        passwordRecovery.resetPasswordButton.shouldBe(visible).click();
-//        passwordRecovery.successPasswordRecoverySendToEmailMessage.shouldBe(visible, text(EXPECTED_SUCCESSFUL_PASSWORD_RECOVERY_SEND_EMAIL_MESSAGE));
-//    }
-//
-//
-//    @Test
-//    @DisplayName("Error message should be displayed and Password recovery should not be send to user invalid email")
-//    void errorMessageShouldBeDisplayedAndPasswordRecoveryShouldNotBeSendToInvalidEmailTest() {
-//        myAccount.passwordRecoveryLink.shouldBe(visible).click();
-//        passwordRecovery.passwordRecoveryPageTitle.shouldBe(visible, text(EXPECTED_PASSWORD_RECOVERY_PAGE_TITLE));
-//        passwordRecovery.emailOrUsernameInputField.shouldBe(visible).sendKeys(INVALID_USER_EMAIL);
-//        passwordRecovery.resetPasswordButton.shouldBe(visible).click();
-//        passwordRecovery.errorPasswordRecoverToEmailMessage.shouldBe(visible, text(EXPECTED_ERROR_INVALID_USERNAME_OR_EMAIL));
-//    }
+    @Test
+    @DisplayName("Password should be send when user input valid username")
+    void passwordShouldBeSendWhenUserInputValidUsernameTest() {
+        passwordRecovery
+                .enterUsernameOrEmail(passwordRecovery.emailOrUsernameInputField, VALID_USER_LOGIN);
+        passwordRecovery
+                .checkMessage(passwordRecovery.successPasswordRecoverySendToEmailMessage, EXPECTED_SUCCESSFUL_SEND_PASSWORD_MESSAGE);
+    }
+
+    @Test
+    @DisplayName("Password should be send when user input valid email")
+    void passwordShouldBeSendWhenUserInputValidEmailTest() {
+        passwordRecovery
+                .enterUsernameOrEmail(passwordRecovery.emailOrUsernameInputField, VALID_USER_EMAIL);
+        passwordRecovery
+                .checkMessage(passwordRecovery.successPasswordRecoverySendToEmailMessage, EXPECTED_SUCCESSFUL_SEND_PASSWORD_MESSAGE);
+    }
+
+    @Test
+    @DisplayName("Error message should be displayed when user input invalid username")
+    void passwordShouldBeSendWhenUserInputInvalidUsernameTest() {
+        passwordRecovery
+                .enterUsernameOrEmail(passwordRecovery.emailOrUsernameInputField, INVALID_USER_LOGIN);
+        passwordRecovery
+                .checkMessage(passwordRecovery.errorPasswordRecoverToEmailMessage, EXPECTED_INVALID_USERNAME_OR_EMAIL_ERROR_MESSAGE);
+    }
+
+    @Test
+    @DisplayName("Error message should be displayed when user input invalid email")
+    void passwordShouldBeSendWhenUserInputInvalidEmailTest() {
+        passwordRecovery
+                .enterUsernameOrEmail(passwordRecovery.emailOrUsernameInputField, INVALID_USER_EMAIL);
+        passwordRecovery
+                .checkMessage(passwordRecovery.errorPasswordRecoverToEmailMessage, EXPECTED_INVALID_USERNAME_OR_EMAIL_ERROR_MESSAGE);
+    }
 }

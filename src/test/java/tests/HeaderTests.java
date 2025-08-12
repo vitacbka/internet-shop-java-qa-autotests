@@ -1,38 +1,27 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
 import pages.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static testdata.HeaderTestData.*;
+import static testdata.MainPageTestData.EXPECTED_BOOKS_PAGE_TITLE;
+import static testdata.MainPageTestData.EXPECTED_MAIN_PAGE_TITLE_TEXT;
 import static testdata.MyAccountPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
 import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
 import static testdata.CatalogPageTestData.CATALOG_PAGE_TITLE;
-import static testdata.MainPageTestData.EXPECTED_TITLE_TEXT;
 
-public class HeaderTests {
+public class HeaderTests extends BaseTest{
     MainPage mainPage = new MainPage();
     HeaderPage header = new HeaderPage();
     CatalogPage catalogPage = new CatalogPage();
     MyAccountPage authPage = new MyAccountPage();
     CartPage cartPage = new CartPage();
 
-    @BeforeAll
-    static void allSetUp() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-    }
-
     @BeforeEach
     void setup() {
         mainPage.openMainPage();
-    }
-
-    @AfterEach
-    void teardown() {
-        closeWebDriver();
     }
 
     @Test
@@ -50,9 +39,7 @@ public class HeaderTests {
     @DisplayName("Click on home tab should open main page")
     void mainMenuTabsShouldBeVisibleTest() {
         header.homeTabClick();
-        mainPage.mainPageTitle
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_TITLE_TEXT));
+        mainPage.isOnMainPage();
     }
 
     @Test
