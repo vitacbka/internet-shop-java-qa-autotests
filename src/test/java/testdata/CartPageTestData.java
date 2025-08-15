@@ -8,5 +8,6 @@ public class CartPageTestData {
             EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE = "Купон успешно добавлен.",
             EXPECTED_ERROR_INVALID_COUPON_MESSAGE = "Неверный купон.",
             EXPECTED_EMPTY_COUPON_MESSAGE = "Пожалуйста, введите код купона.",
-            COUPON_IS_REMOVED_MESSAGE = "Купон удален.";
+            EXPECTED_COUPON_IS_REMOVED_MESSAGE = "Купон удален.",
+            EXPECTED_COUPON_ALREADY_APPLIED_MESSAGE = "Coupon code already applied!";
 }

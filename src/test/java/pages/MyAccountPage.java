@@ -2,6 +2,8 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static readproperties.ConfigProvider.*;
@@ -11,22 +13,27 @@ public class MyAccountPage {
     public final SelenideElement
             usernameInputField = $("#username"),
             passwordInputField = $("#password"),
-            MyAccountPageTitle = $(".post-title"),
+            myAccountPageTitle = $(".post-title"),
             loginButton = $(".woocommerce-button"),
-            registrationButton = $(".custom-register-button"),
             rememberMeCheckbox = $("#rememberme"),
             forgotPasswordLink = $("a[href*='/lost-password/']"),
-            passwordRecoveryPageTitle = $(".post-title"),
             passwordIsRequiredError = $(".woocommerce-error"),
             usernameIsRequiredError = $(".woocommerce-error"),
             invalidUserNameOrPasswordMessage = $(".woocommerce-error"),
             helloMessageText = $(".woocommerce-MyAccount-content p"),
             logoutButton = $(".woocommerce-MyAccount-navigation a[href*='logout']"),
-            invalidCredentialsErrorMessage = $(".woocommerce-error"),
             unknownEmailAddressErrorMessage = $(".woocommerce-error");
 
     public void openAuthPage() {
         open(MY_ACCOUNT_PAGE_URL);
+    }
+
+    public void myAccountPageTitleShouldBeVisible(String title) {
+        myAccountPageTitle.shouldBe(visible).shouldHave(text(title));
+    }
+
+    public void forgotPasswordLinkClick() {
+        forgotPasswordLink.shouldBe(visible).click();
     }
 
     public void enterCredentials(String usernameOrEmail, String password) {
@@ -40,11 +47,12 @@ public class MyAccountPage {
     }
 
     public void clickLoginButton() {
-        loginButton.click();
+        loginButton.shouldBe(visible).click();
     }
 
     public void clickLogoutButton() {
-        logoutButton.click();
+
+        logoutButton.shouldBe(visible).click();
     }
 
     public void login(String usernameOrEmail, String password) {
@@ -53,35 +61,19 @@ public class MyAccountPage {
         clickLoginButton();
     }
 
-    public SelenideElement getHelloMessage() {
-        return helloMessageText;
+    public void helloMessageShouldBeVisible(String helloMessage) {
+        helloMessageText.shouldBe(visible).shouldHave(text(helloMessage));
     }
 
-    public SelenideElement getInvalidCredentialsErrorMessage() {
-        return invalidCredentialsErrorMessage;
+    public void helloMessageShouldNotBeVisible() {
+        helloMessageText.shouldNotBe(visible);
     }
 
-    public SelenideElement getInvalidUserNameOrPasswordMessage() {
-        return invalidUserNameOrPasswordMessage;
+    public void errorCredentialsMessageShouldBeVisible(SelenideElement element, String errorMessage) {
+        element.shouldBe(visible).shouldHave(text(errorMessage));
     }
 
-    public SelenideElement getPasswordRecoveryPageTitle() {
-        return passwordRecoveryPageTitle;
-    }
-
-    public SelenideElement getMyAccountPageTitle() {
-        return MyAccountPageTitle;
-    }
-
-    public SelenideElement getPasswordIsRequiredError() {
-        return  passwordIsRequiredError;
-    }
-
-    public SelenideElement geUsernameIsRequiredError() {
-        return usernameIsRequiredError;
-    }
-
-    public SelenideElement getUnknownEmailAddressErrorMessage() {
-        return unknownEmailAddressErrorMessage;
+    public void errorUsernameOrEmailMessageShouldBeDisplayed(SelenideElement element, String errorMessage) {
+        element.shouldBe(visible).shouldHave(text(errorMessage));
     }
 }

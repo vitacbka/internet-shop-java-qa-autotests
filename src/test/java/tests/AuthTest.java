@@ -1,16 +1,12 @@
 package tests;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
 import pages.MyAccountPage;
-
-import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static readproperties.ConfigProvider.*;
 import static testdata.MyAccountPageTestData.*;
 import static testdata.HeaderTestData.EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT;
-
 import helpers.Cookies;
 import pages.HeaderPage;
 
@@ -27,10 +23,7 @@ public class AuthTest extends BaseTest{
     @Test
     @DisplayName("Login page title should be displayed")
     void loginPageTitleShouldBeDisplayedTest() {
-        myAccount
-                .getMyAccountPageTitle()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
+        myAccount.myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
     }
 
     @Test
@@ -38,9 +31,7 @@ public class AuthTest extends BaseTest{
     void welcomeTextAtHeaderShouldBeDisplayedAfterUserIsLogin() {
         myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        header.getWelcomeTextAtHeader()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT));
+        header.welcomeTextAtHeaderShouldBeDisplayed(EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT);
     }
 
     @Test
@@ -48,12 +39,8 @@ public class AuthTest extends BaseTest{
     void userShouldBeLoggedInTest() {
         myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.clickLogoutButton();
-        myAccount.getMyAccountPageTitle()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
-        myAccount.getHelloMessage()
-                        .shouldNotBe(visible);
+        myAccount.myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
+        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -62,12 +49,8 @@ public class AuthTest extends BaseTest{
         myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
         myAccount.clickLogoutButton();
-        myAccount.getMyAccountPageTitle()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_MY_ACCOUNT_TITLE));
-        header.getLoginLinkButton()
-                .shouldBe(visible)
-                .shouldHave(text("Войти"));
+        myAccount.myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
+        header.clickLoginButton();
     }
 
     @Test
@@ -75,11 +58,9 @@ public class AuthTest extends BaseTest{
     void logoutTest() {
         myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getHelloMessage()
-                .shouldBe(visible);
+        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
         myAccount.clickLogoutButton();
-        myAccount.getHelloMessage()
-                .shouldNotBe(visible);
+        myAccount.helloMessageShouldNotBeVisible();
     }
 
     @Test
@@ -87,9 +68,8 @@ public class AuthTest extends BaseTest{
     void passwordIsRequiredErrorMessageShouldBeDisplayedTest() {
         myAccount.enterCredentials(VALID_USER_LOGIN, "");
         myAccount.clickLoginButton();
-        myAccount.getPasswordIsRequiredError()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_PASSWORD_IS_REQUIRED_ERROR));
+        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.passwordIsRequiredError,
+                EXPECTED_PASSWORD_IS_REQUIRED_ERROR);
     }
 
     @Test
@@ -97,18 +77,17 @@ public class AuthTest extends BaseTest{
     void usernameIsRequiredErrorMessageShouldBeDisplayedTest() {
         myAccount.enterCredentials("", VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.geUsernameIsRequiredError()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
+        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
+                EXPECTED_USERNAME_IS_REQUIRED_ERROR);
     }
 
     @Test
     @DisplayName("Error message should be displayed when user click login button with empty username and empty password")
     void errorMessageShouldBeDisplayedWhenClickLoginButtonWithoutCredentialsTest() {
+        myAccount.enterCredentials("", "");
         myAccount.clickLoginButton();
-        myAccount.geUsernameIsRequiredError()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_USERNAME_IS_REQUIRED_ERROR));
+        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
+                EXPECTED_USERNAME_IS_REQUIRED_ERROR);
     }
 
     @Test
@@ -116,9 +95,8 @@ public class AuthTest extends BaseTest{
     void errorMessageShouldBeDisplayedWhenUserEnterInvalidPasswordTest() {
         myAccount.enterCredentials(VALID_USER_LOGIN, INVALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getPasswordIsRequiredError()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_INVALID_PASSWORD_ERROR));
+        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.invalidUserNameOrPasswordMessage,
+                EXPECTED_INVALID_PASSWORD_ERROR);
     }
 
     @Test
@@ -126,9 +104,8 @@ public class AuthTest extends BaseTest{
     void errorMessageShouldBeDisplayedWhenUserLoginWithInvalidCredentialsTest() {
         myAccount.enterCredentials(INVALID_USER_LOGIN, INVALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getInvalidCredentialsErrorMessage()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_INVALID_CREDENTIALS_ERROR_MESSAGE));
+        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.invalidUserNameOrPasswordMessage,
+                EXPECTED_INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
 
     @Test
@@ -136,9 +113,7 @@ public class AuthTest extends BaseTest{
     void userShouldBeLoggedInWithValidCredentialsViaEmailTest() {
         myAccount.enterCredentials(VALID_USER_EMAIL, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getHelloMessage()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -146,10 +121,7 @@ public class AuthTest extends BaseTest{
     void errorMessageShouldBeDisplayedAfterUserHasInputInvalidEmailTest() {
         myAccount.enterCredentials(INVALID_USER_EMAIL, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getUnknownEmailAddressErrorMessage()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_UNKNOWN_EMAIL_ADDRESS_ERROR));
-
+        myAccount.errorUsernameOrEmailMessageShouldBeDisplayed(myAccount.unknownEmailAddressErrorMessage, EXPECTED_UNKNOWN_EMAIL_ADDRESS_ERROR);
     }
 
     @Test
@@ -161,10 +133,8 @@ public class AuthTest extends BaseTest{
         closeWebDriver();
         myAccount.openAuthPage();
         cookies.pasteCookies();
-        Selenide.refresh();
-        myAccount.getHelloMessage()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+        cookies.refreshPage();
+        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -172,12 +142,7 @@ public class AuthTest extends BaseTest{
     void userShouldBeLogoutAfterClickLogoutButtonInHeader() {
         myAccount.enterCredentialsWithRememberMeCheckbox(VALID_USER_EMAIL, VALID_USER_PASSWORD);
         myAccount.clickLoginButton();
-        myAccount.getHelloMessage()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HELLO_MESSAGE_TEXT.trim()));
+        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
         header.clickLogoutButton();
-        header.getLoginButtonText()
-                .shouldBe(visible)
-                .shouldHave(text("Войти"));
     }
 }

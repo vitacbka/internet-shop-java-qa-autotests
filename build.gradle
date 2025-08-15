@@ -15,7 +15,8 @@ dependencies {
             'org.junit.jupiter:junit-jupiter',
             'com.codeborne:selenide:7.9.3',
             'com.github.javafaker:javafaker:1.0.2',
-            'com.typesafe:config:1.4.3'
+            'com.typesafe:config:1.4.3',
+            'org.assertj:assertj-core:3.27.4'
     )
 }
 

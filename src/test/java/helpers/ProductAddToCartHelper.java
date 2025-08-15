@@ -1,7 +1,6 @@
 package helpers;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
 import pages.CartPage;
 import pages.HeaderPage;
 
@@ -18,10 +17,9 @@ public class ProductAddToCartHelper {
 
     public ProductAddToCartHelper addPhoneAtCart() {
         header.cartTab.click();
-        if (cart.removeCouponButton.isDisplayed()) {
+        if (cart.removeCouponButton.exists()) {
             cart.clickRemoveCouponButton();
         }
-
         header.catalogTab.shouldBe(visible, Duration.ofSeconds(7));
         header.catalogTab.scrollIntoView(true);
         header.hoverOnCatalogTab();

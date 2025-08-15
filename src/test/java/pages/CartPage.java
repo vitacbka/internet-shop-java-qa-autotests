@@ -1,17 +1,11 @@
 package pages;
 
 import com.codeborne.selenide.SelenideElement;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverConditions.url;
 import static readproperties.ConfigProvider.*;
-import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
 
 public class CartPage {
 
@@ -22,26 +16,27 @@ public class CartPage {
             toPayPrice = $("tr[class='order-total'] bdi:nth-child(1)"),
             couponInputField = $("#coupon_code"),
             removeCouponButton = $(".woocommerce-remove-coupon"),
-            successfulCouponMessage = $("div[role='alert']"),
-            errorCouponMessage = $("ul[role='alert'] li"),
-            doubleApplyCouponMessage = $("ul[role='alert'] li"),
-            emptyCouponMessage = $("ul[role='alert'] li"),
             placingAnOrderPageTitle = $("div#accesspress-breadcrumb span.current"),
             applyCouponButton = $x("//button[contains(text(),'Применить купон')]"),
             removeItemFromCartButton = $("a[aria-label='Remove this item']"),
             restoreItemButton = $x("//a[@class='restore-item' and text()='Вернуть?']"),
             toPayButton = $(".checkout-button.button.alt.wc-forward"),
-            deletedCouponMessage = $x("//div[@role='alert' and contains(text(), 'Купон удален')]"),
             placeAnOrderButton = $(".checkout-button.button.alt.wc-forward"),
-            productNameInCart = $x("(//*[@class='product-name'])[2]");
+            productNameInCart = $x("(//*[@class='product-name'])[2]"),
+
+    //Coupon messages locators
+            successfulCouponMessage = $(".woocommerce-message"),
+            emptyCouponMessage = $("ul[role='alert'] li"),
+            errorCouponMessage = $(".woocommerce-error li"),
+            couponAlreadyAppliedMessage = $(".woocommerce-error li"),
+            deletedCouponMessage = $x("//div[@role='alert' and contains(text(), 'Купон удален')]");
 
     public void openCartPage() {
         open(CART_PAGE_URL);
     }
 
-    public void isOnCartPage() {
-        webdriver().shouldHave(url(CART_PAGE_URL));
-        cartPageTitle.shouldBe(visible).shouldHave(text(EXPECTED_CART_PAGE_TITLE));
+    public void cartPageTitleShouldBeVisible(String title) {
+        cartPageTitle.shouldBe(visible).shouldHave(text(title));
     }
 
     public void clearCart() {
@@ -53,7 +48,9 @@ public class CartPage {
     }
 
     public void setCouponData(String coupon) {
-        couponInputField.setValue(coupon);
+        couponInputField
+                .shouldBe(visible)
+                .setValue(coupon);
     }
 
     public void clickOnApplyCouponButton() {
@@ -61,7 +58,7 @@ public class CartPage {
     }
 
     public void clickRemoveCouponButton() {
-        removeCouponButton.click();
+        removeCouponButton.shouldBe(visible).click();
     }
 
     public double getTotalPriceAsDouble() {
@@ -72,8 +69,37 @@ public class CartPage {
         return Double.parseDouble(priceText);
     }
 
+    public void twiceApplyValidCoupon(String coupon) {
+        couponInputField
+                .shouldBe(visible)
+                .setValue(coupon);
+        clickOnApplyCouponButton();
+        couponInputField
+                .shouldBe(visible)
+                .clear();
+        couponInputField.setValue(coupon);
+        clickOnApplyCouponButton();
+    }
 
     public void waitForPriceChange(double oldPrice) {
         toPayPrice.shouldNotHave(text(String.valueOf(oldPrice)), Duration.ofSeconds(10));
+    }
+
+    public void successfulCouponMessage (String message) {
+        successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
+    }
+
+    public void couponMessage(SelenideElement element, String expectedText) {
+        element
+                .shouldBe(visible)
+                .shouldHave(text(expectedText));
+    }
+
+    public void cartIsEmptyMessage(String message) {
+        cartIsEmptyMessage.shouldBe(visible).shouldHave(text(message));
+    }
+
+    public void successfulApplyCouponMessage(String message) {
+        successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
     }
 }

@@ -18,9 +18,18 @@ public class PasswordRecoveryPage {
     public void clickResetPassword() {
         resetPasswordButton.click();
     }
-    public void checkMessage(SelenideElement element, String message) {
+
+    public void passwordRecoveryPageTitleShouldBeVisible(String title) {
+        passwordRecoveryPageTitle.shouldBe(visible).shouldHave(text(title));
+    }
+
+    public void successfulPasswordSendMessageShouldBeVisible(SelenideElement element, String message) {
         element.shouldBe(visible).shouldHave(text(message));
     }
+    public void errorPasswordSendMessageShouldBeVisible(SelenideElement element, String message) {
+        element.shouldBe(visible).shouldHave(text(message));
+    }
+
 
     public void enterUsernameOrEmail (SelenideElement element, String username) {
         element.setValue(username);

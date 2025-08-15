@@ -3,7 +3,7 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import testdata.HeaderTestData;
 
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static testdata.HeaderTestData.*;
 
@@ -39,45 +39,16 @@ public class HeaderPage {
             booksLink = $("li#menu-item-180 a"),
             clothesLink = $("li#menu-item-48 a");
 
-
-    public SelenideElement mainMenu() {
-        return  mainMenu;
-    }
-
-    public SelenideElement catalogTab() {
-        return catalogTab;
-    }
-
-    public SelenideElement homeTab() {
-        return homeTab;
-    }
-
-    public SelenideElement myAccountTab() {
-        return myAccountTab;
-    }
-
-    public SelenideElement cartTab() {
-        return cartTab;
-    }
-
-    public SelenideElement placeAnOrderTab() {
-        return placeAnOrderTab;
-    }
-
     public void clickLogoutButton() {
-        logoutLinkButton.click();
+        logoutLinkButton.shouldBe(visible).click();
     }
 
-    public SelenideElement getLoginButtonText() {
-        return loginLinkButton;
+    public void clickLoginButton() {
+        loginLinkButton.shouldBe(visible).shouldBe(clickable).click();
     }
 
-    public SelenideElement getWelcomeTextAtHeader() {
-        return welcomeTextAtHeader;
-    }
-
-    public SelenideElement getLoginLinkButton() {
-        return loginLinkButton;
+    public void welcomeTextAtHeaderShouldBeDisplayed(String welcomeText) {
+        welcomeTextAtHeader.shouldBe(visible).shouldHave(text(welcomeText));
     }
 
     public void catalogTabClick() {
@@ -100,8 +71,8 @@ public class HeaderPage {
         placeAnOrderTab.click();
     }
 
-    public SelenideElement getHeaderContactInfo() {
-        return headerContactInfo;
+    public void headerContactInfoShouldBeVisible(String contactInfoText) {
+        headerContactInfo.shouldBe(visible).shouldHave(text(contactInfoText));
     }
 
     public void hoverOnCatalogTab() {
@@ -116,39 +87,31 @@ public class HeaderPage {
         electronicsSubMenu.hover();
     }
 
-    public void clickRefrigeratorLonk() {
-        refrigeratorsLink.click();
-    }
-
-    public void clickPhoneLink() {
-        phonesLink.click();
-    }
-
     public void verifyMainTabsText() {
-        homeTab.shouldHave(text(HeaderTestData.EXPECTED_MAIN_PAGE_TAB));
-        catalogTab.shouldHave(text(HeaderTestData.EXPECTED_CATALOG_TAB));
-        myAccountTab.shouldHave(text(HeaderTestData.EXPECTED_MY_ACCOUNT_TAB));
-        cartTab.shouldHave(text(HeaderTestData.EXPECTED_CART_TAB));
-        placeAnOrderTab.shouldHave(text(HeaderTestData.EXPECTED_PLACE_AN_ORDER_TAB));
+        homeTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_MAIN_PAGE_TAB));
+        catalogTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CATALOG_TAB));
+        myAccountTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_MY_ACCOUNT_TAB));
+        cartTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CART_TAB));
+        placeAnOrderTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_PLACE_AN_ORDER_TAB));
     }
 
     public void verifyCatalogSubmenuText() {
-        appliancesSubMenu.shouldHave(text(HeaderTestData.EXPECTED_APPLIANCES_TEXT));
-        electronicsSubMenu.shouldHave(text(HeaderTestData.EXPECTED_ELECTRONICS_TEXT));
-        booksLink.shouldHave(text(HeaderTestData.EXPECTED_BOOKS_TAB));
-        clothesLink.shouldHave(text(HeaderTestData.EXPECTED_CLOSES_TAB));
+        appliancesSubMenu.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_APPLIANCES_TEXT));
+        electronicsSubMenu.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_ELECTRONICS_TEXT));
+        booksLink.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_BOOKS_TAB));
+        clothesLink.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CLOSES_TAB));
     }
 
     public void verifyHouseholdAppliancesText() {
-        refrigeratorsLink.shouldHave(text(EXPECTED_REFRIGERATOR_TAB));
-        washingMachinesLink.shouldHave(text(EXPECTED_WASHING_MACHINE_TAB));
+        refrigeratorsLink.shouldBe(visible).shouldHave(text(EXPECTED_REFRIGERATOR_TAB));
+        washingMachinesLink.shouldBe(visible).shouldHave(text(EXPECTED_WASHING_MACHINE_TAB));
     }
 
     public void verifyElectronicsSubmenuTexts() {
-        phonesLink.shouldHave(text(EXPECTED_PHONES_TAB));
-        tabletsLink.shouldHave(text(EXPECTED_TABLETS_TAB));
-        tvLink.shouldHave(text(EXPECTED_TELEVISION_TAB));
-        photoVideoLink.shouldHave(text(EXPECTED_PHOTO_VIDEO_TAB));
-        watchesLink.shouldHave(text(EXPECTED_WATCH_TAB));
+        phonesLink.shouldBe(visible).shouldHave(text(EXPECTED_PHONES_TAB));
+        tabletsLink.shouldBe(visible).shouldHave(text(EXPECTED_TABLETS_TAB));
+        tvLink.shouldBe(visible).shouldHave(text(EXPECTED_TELEVISION_TAB));
+        photoVideoLink.shouldBe(visible).shouldHave(text(EXPECTED_PHOTO_VIDEO_TAB));
+        watchesLink.shouldBe(visible).shouldHave(text(EXPECTED_WATCH_TAB));
     }
 }

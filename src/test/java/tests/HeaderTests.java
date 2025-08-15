@@ -1,12 +1,10 @@
 package tests;
 
-import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.*;
 import pages.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static testdata.HeaderTestData.*;
-import static testdata.MainPageTestData.EXPECTED_BOOKS_PAGE_TITLE;
 import static testdata.MainPageTestData.EXPECTED_MAIN_PAGE_TITLE_TEXT;
 import static testdata.MyAccountPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
 import static testdata.CartPageTestData.EXPECTED_CART_PAGE_TITLE;
@@ -14,9 +12,9 @@ import static testdata.CatalogPageTestData.CATALOG_PAGE_TITLE;
 
 public class HeaderTests extends BaseTest{
     MainPage mainPage = new MainPage();
-    HeaderPage header = new HeaderPage();
+    HeaderPage headerPage = new HeaderPage();
     CatalogPage catalogPage = new CatalogPage();
-    MyAccountPage authPage = new MyAccountPage();
+    MyAccountPage myAccountPage = new MyAccountPage();
     CartPage cartPage = new CartPage();
 
     @BeforeEach
@@ -25,92 +23,72 @@ public class HeaderTests extends BaseTest{
     }
 
     @Test
-    @DisplayName("Header tabs should be visible at main page")
-    void contactInformationShouldBeVisibleAtHeaderTest() {
-        header.mainMenu().shouldBe(visible);
-        header.homeTab().shouldBe(visible);
-        header.catalogTab().shouldBe(visible);
-        header.myAccountTab().shouldBe(visible);
-        header.cartTab().shouldBe(visible);
-        header.placeAnOrderTab().shouldBe(visible);
-    }
-
-    @Test
     @DisplayName("Click on home tab should open main page")
     void mainMenuTabsShouldBeVisibleTest() {
-        header.homeTabClick();
-        mainPage.isOnMainPage();
+        headerPage.homeTabClick();
+        mainPage.mainPageTitleShouldBeVisible(EXPECTED_MAIN_PAGE_TITLE_TEXT);
     }
 
     @Test
     @DisplayName("Click on catalog tab should open catalog page")
     void catalogMenuTabsShouldBeVisibleTest() {
-        header.catalogTabClick();
-        catalogPage.getCatalogPageTitle()
-                .shouldBe(visible, text(CATALOG_PAGE_TITLE));
+        headerPage.catalogTabClick();
+        catalogPage.catalogPageTitleShouldBeVisible(CATALOG_PAGE_TITLE);
     }
 
     @Test
     @DisplayName("Click on my account tab should open my account page")
     void clickOnMyAccountHeaderTabTest() {
-        header.accountTabClick();
-        authPage.MyAccountPageTitle.shouldBe(visible, text(EXPECTED_MY_ACCOUNT_TITLE));
+        headerPage.accountTabClick();
+        myAccountPage.myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
     }
 
     @Test
     @DisplayName("Click on cart tab should open cart page")
     void clickOnCartHeaderTabTest() {
-        header.cartTabClick();
-        cartPage.getCartPageTitle()
-                .shouldBe(visible, text(EXPECTED_CART_PAGE_TITLE));
+        headerPage.cartTabClick();
+        cartPage.cartPageTitleShouldBeVisible(EXPECTED_CART_PAGE_TITLE);
     }
 
     @Test
-    @DisplayName("Click on place tab should open cart page")
+    @DisplayName("Click on place on order tab should open cart page")
     void clickOnPlaceHeaderTabTest() {
-        header.clickPlaceAnOrderTab();
-        cartPage.getCartPageTitle()
-                .shouldBe(visible, text(EXPECTED_CART_PAGE_TITLE));
+        headerPage.clickPlaceAnOrderTab();
+        cartPage.cartPageTitleShouldBeVisible(EXPECTED_CART_PAGE_TITLE);
     }
 
     @Test
     @DisplayName("Contact information should be displayed in header")
     void checkContactInfoInHeaderTest() {
-        header.getHeaderContactInfo()
-                .shouldBe(visible)
-                .shouldHave(text(EXPECTED_HEADER_CONTACT_INFO));
-    }
-
-    @Test
-    @DisplayName("Header tabs should correct text")
-    void headerTabsShouldHaveCorrectTextTest() {
-        header.homeTab().shouldHave(text(EXPECTED_MAIN_PAGE_TAB));
-        header.catalogTab().shouldHave(text(EXPECTED_CATALOG_TAB));
-        header.myAccountTab().shouldHave(text(EXPECTED_MY_ACCOUNT_TAB));
-        header.cartTab().shouldHave(text(EXPECTED_CART_TAB));
-        header.placeAnOrderTab().shouldHave(text(EXPECTED_PLACE_AN_ORDER_TAB));
+        headerPage.headerContactInfoShouldBeVisible(EXPECTED_HEADER_CONTACT_INFO);
     }
 
     @Test
     @DisplayName("Catalog submenu should be displayed with correct text")
     void catalogSubmenuShouldDisplayCorrectTextTest() {
-        header.hoverOnCatalogTab();
-        header.verifyCatalogSubmenuText();
+        headerPage.hoverOnCatalogTab();
+        headerPage.verifyCatalogSubmenuText();
     }
 
     @Test
     @DisplayName("Household appliances submenu should be displayed with correct text")
     void householdAppliancesShouldBeDisplayedWithCorrectTextTest() {
-        header.hoverOnCatalogTab();
-        header.hoverOnHouseholdAppliances();
-        header.verifyHouseholdAppliancesText();
+        headerPage.hoverOnCatalogTab();
+        headerPage.hoverOnHouseholdAppliances();
+        headerPage.verifyHouseholdAppliancesText();
     }
 
     @Test
     @DisplayName("Electronics submenu should be displayed with correct text")
     void electronicsSubmenuShouldBeDisplayedWithCorrectTextTest() {
-        header.hoverOnCatalogTab();
-        header.hoverOnElectronics();
-        header.verifyElectronicsSubmenuTexts();
+        headerPage.hoverOnCatalogTab();
+        headerPage.hoverOnElectronics();
+        headerPage.verifyElectronicsSubmenuTexts();
+    }
+
+    @Test
+    @DisplayName("Main page tabs should be visible")
+    void mainPageTabsShouldBeVisible() {
+        headerPage.verifyMainTabsText();
     }
 }

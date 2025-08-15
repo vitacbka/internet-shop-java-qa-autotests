@@ -16,18 +16,6 @@ MainPage mainPage = new MainPage();
 HeaderPage header = new HeaderPage();
 SearchResultPage search = new SearchResultPage();
 
-@BeforeEach
-    void setup() {
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-        mainPage.openMainPage();
-    }
-
-    @AfterEach
-    void teardown() {
-        closeWebDriver();
-    }
-
     @Test
     @DisplayName("Item should be found by name at search field")
     void itemShouldBeFoundByNameTest() {
