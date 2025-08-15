@@ -28,31 +28,34 @@ public class MyAccountPage {
         open(MY_ACCOUNT_PAGE_URL);
     }
 
-    public void myAccountPageTitleShouldBeVisible(String title) {
+    public MyAccountPage myAccountPageTitleShouldBeVisible(String title) {
         myAccountPageTitle.shouldBe(visible).shouldHave(text(title));
+        return this;
     }
 
     public void forgotPasswordLinkClick() {
         forgotPasswordLink.shouldBe(visible).click();
     }
 
-    public void enterCredentials(String usernameOrEmail, String password) {
+    public MyAccountPage enterCredentials(String usernameOrEmail, String password) {
         usernameInputField.setValue(usernameOrEmail);
         passwordInputField.setValue(password);
+        return this;
     }
 
-    public void enterCredentialsWithRememberMeCheckbox(String usernameOrEmail, String password) {
-        enterCredentials(usernameOrEmail, password);
+    public MyAccountPage clickRememberMeCheckbox() {
         rememberMeCheckbox.click();
+        return this;
     }
 
-    public void clickLoginButton() {
+    public MyAccountPage clickLoginButton() {
         loginButton.shouldBe(visible).click();
+        return this;
     }
 
-    public void clickLogoutButton() {
-
+    public MyAccountPage clickLogoutButton() {
         logoutButton.shouldBe(visible).click();
+        return this;
     }
 
     public void login(String usernameOrEmail, String password) {
@@ -61,8 +64,9 @@ public class MyAccountPage {
         clickLoginButton();
     }
 
-    public void helloMessageShouldBeVisible(String helloMessage) {
+    public MyAccountPage helloMessageShouldBeVisible(String helloMessage) {
         helloMessageText.shouldBe(visible).shouldHave(text(helloMessage));
+        return this;
     }
 
     public void helloMessageShouldNotBeVisible() {

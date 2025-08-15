@@ -39,16 +39,29 @@ public class HeaderPage {
             booksLink = $("li#menu-item-180 a"),
             clothesLink = $("li#menu-item-48 a");
 
-    public void clickLogoutButton() {
+    public HeaderPage clickLogoutButton() {
         logoutLinkButton.shouldBe(visible).click();
+        return this;
     }
 
     public void clickLoginButton() {
         loginLinkButton.shouldBe(visible).shouldBe(clickable).click();
     }
 
-    public void welcomeTextAtHeaderShouldBeDisplayed(String welcomeText) {
+    public HeaderPage loginButtonShouldBeVisible(String loginButtonText) {
+        loginLinkButton.shouldBe(visible)
+                .shouldHave(text(loginButtonText));
+        return this;
+    }
+
+    public HeaderPage welcomeTextAtHeaderShouldBeDisplayed(String welcomeText) {
         welcomeTextAtHeader.shouldBe(visible).shouldHave(text(welcomeText));
+        return this;
+    }
+
+    public HeaderPage welcomeTextAtHeaderShouldNotBeVisible() {
+        welcomeTextAtHeader.shouldNotBe(visible);
+        return this;
     }
 
     public void catalogTabClick() {
@@ -63,8 +76,9 @@ public class HeaderPage {
         myAccountTab.click();
     }
 
-    public void cartTabClick() {
+    public HeaderPage clickCartTab() {
         cartTab.click();
+        return this;
     }
 
     public void clickPlaceAnOrderTab() {

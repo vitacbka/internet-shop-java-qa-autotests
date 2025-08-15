@@ -31,34 +31,41 @@ public class CartPage {
             couponAlreadyAppliedMessage = $(".woocommerce-error li"),
             deletedCouponMessage = $x("//div[@role='alert' and contains(text(), 'Купон удален')]");
 
-    public void openCartPage() {
+    public CartPage openCartPage() {
         open(CART_PAGE_URL);
+        return this;
     }
 
-    public void cartPageTitleShouldBeVisible(String title) {
+    public CartPage cartPageTitleShouldBeVisible(String title) {
         cartPageTitle.shouldBe(visible).shouldHave(text(title));
+        return this;
     }
 
-    public void clearCart() {
+    public CartPage clearCart() {
         removeItemFromCartButton.shouldBe(visible).click();
+        return this;
     }
 
-    public SelenideElement getCartPageTitle() {
-        return cartPageTitle;
+    public CartPage productNameInCartShouldBeVisible() {
+        productNameInCart.shouldBe(visible);
+        return this;
     }
 
-    public void setCouponData(String coupon) {
+    public CartPage setCouponData(String coupon) {
         couponInputField
                 .shouldBe(visible)
                 .setValue(coupon);
+        return this;
     }
 
-    public void clickOnApplyCouponButton() {
+    public CartPage clickOnApplyCouponButton() {
         applyCouponButton.shouldBe(visible).click();
+        return this;
     }
 
-    public void clickRemoveCouponButton() {
+    public CartPage clickRemoveCouponButton() {
         removeCouponButton.shouldBe(visible).click();
+        return this;
     }
 
     public double getTotalPriceAsDouble() {
@@ -69,7 +76,7 @@ public class CartPage {
         return Double.parseDouble(priceText);
     }
 
-    public void twiceApplyValidCoupon(String coupon) {
+    public CartPage twiceApplyValidCoupon(String coupon) {
         couponInputField
                 .shouldBe(visible)
                 .setValue(coupon);
@@ -79,27 +86,57 @@ public class CartPage {
                 .clear();
         couponInputField.setValue(coupon);
         clickOnApplyCouponButton();
+        return this;
     }
 
-    public void waitForPriceChange(double oldPrice) {
+    public CartPage waitForPriceChange(double oldPrice) {
         toPayPrice.shouldNotHave(text(String.valueOf(oldPrice)), Duration.ofSeconds(10));
+        return this;
     }
 
-    public void successfulCouponMessage (String message) {
+    public CartPage successfulCouponMessageShouldBeVisible(String message) {
         successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
+        return this;
+    }
+    public CartPage errorCouponMessageShouldBeVisible(String message) {
+        errorCouponMessage.shouldBe(visible)
+                .shouldHave(text(message));
+        return this;
     }
 
-    public void couponMessage(SelenideElement element, String expectedText) {
-        element
-                .shouldBe(visible)
+    public CartPage invalidCouponMessageShouldBeVisible(String message) {
+        errorCouponMessage.shouldBe(visible);
+        return this;
+    }
+
+    public CartPage couponMessage(SelenideElement element, String expectedText) {
+        element.shouldBe(visible)
                 .shouldHave(text(expectedText));
+        return this;
     }
 
-    public void cartIsEmptyMessage(String message) {
+    public CartPage emptyCouponMessageShouldBeVisible(String message) {
+        emptyCouponMessage.shouldBe(visible);
+        return this;
+    }
+
+    public CartPage deletedCouponMessageShouldBeVisible(String message) {
+        deletedCouponMessage.shouldBe(visible);
+        return this;
+    }
+
+    public CartPage cartIsEmptyMessage(String message) {
         cartIsEmptyMessage.shouldBe(visible).shouldHave(text(message));
+        return this;
     }
 
-    public void successfulApplyCouponMessage(String message) {
+    public CartPage alreadyApplyCouponMessageShouldBeVisible(String message) {
+        couponAlreadyAppliedMessage.shouldBe(visible);
+        return this;
+    }
+
+    public CartPage successfulApplyCouponMessage(String message) {
         successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
+        return this;
     }
 }
