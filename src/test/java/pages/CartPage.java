@@ -98,11 +98,6 @@ public class CartPage {
         successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
         return this;
     }
-    public CartPage errorCouponMessageShouldBeVisible(String message) {
-        errorCouponMessage.shouldBe(visible)
-                .shouldHave(text(message));
-        return this;
-    }
 
     public CartPage invalidCouponMessageShouldBeVisible(String message) {
         errorCouponMessage.shouldBe(visible);

@@ -1,11 +1,8 @@
 package tests;
 
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.*;
 import pages.MyAccountPage;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static readproperties.ConfigProvider.*;
 import static testdata.HeaderTestData.EXPECTED_LOGIN_BUTTON_TEXT;
 import static testdata.MyAccountPageTestData.*;
@@ -14,7 +11,7 @@ import static testdata.HeaderTestData.EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT;
 import helpers.Cookies;
 import pages.HeaderPage;
 
-public class AuthTest extends BaseTest {
+public class AuthTests extends BaseTest {
     MyAccountPage myAccount = new MyAccountPage();
     Cookies cookies = new Cookies();
     HeaderPage header = new HeaderPage();
