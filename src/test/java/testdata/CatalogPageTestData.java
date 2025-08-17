@@ -28,15 +28,5 @@ public class CatalogPageTestData {
     };
 
     // Дополнительные константы для тестов
-    public static final String
-            WASHING_MACHINES = "Стиральные машины",
-            REFRIGERATORS = "Холодильники",
-            PHONES = "Телефоны",
-            POPULARITY_SORT = "По популярности",
-            DEFAULT_SORT = "По умолчанию",
-
-    ADD_TO_CART_BUTTON = "В корзину",
-            VIEW_CART_BUTTON = "Подробнее",
-            CART_EMPTY_MESSAGE = "Ваша корзина пуста",
-            ADDED_TO_CART_MESSAGE = "Товар добавлен в корзину!";
+    public static final String TELEVISION_TEXT_FOR_SEARCH = "Телевизоры";
 }

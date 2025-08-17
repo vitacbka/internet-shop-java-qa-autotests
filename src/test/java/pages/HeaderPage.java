@@ -19,6 +19,7 @@ public class HeaderPage {
             headerContactInfo = $("#custom_html-2"),
             loginLinkButton = $(".account"),
             welcomeTextAtHeader = $(".welcome-user"),
+            searchField = $(".search-field"),
             logoutLinkButton = $(".logout");
     
 
