@@ -1,9 +1,11 @@
 package pages;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import java.time.Duration;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static readproperties.ConfigProvider.*;
 
@@ -18,7 +20,6 @@ public class CartPage {
             removeCouponButton = $(".woocommerce-remove-coupon"),
             placingAnOrderPageTitle = $("div#accesspress-breadcrumb span.current"),
             applyCouponButton = $x("//button[contains(text(),'Применить купон')]"),
-            removeItemFromCartButton = $("a[aria-label='Remove this item']"),
             restoreItemButton = $x("//a[@class='restore-item' and text()='Вернуть?']"),
             toPayButton = $(".checkout-button.button.alt.wc-forward"),
             placeAnOrderButton = $(".checkout-button.button.alt.wc-forward"),
@@ -31,6 +32,8 @@ public class CartPage {
             couponAlreadyAppliedMessage = $(".woocommerce-error li"),
             deletedCouponMessage = $x("//div[@role='alert' and contains(text(), 'Купон удален')]");
 
+    public ElementsCollection removeItemFromCartButtons = $$("a[aria-label='Remove this item']");
+
     public CartPage openCartPage() {
         open(CART_PAGE_URL);
         return this;
@@ -41,8 +44,18 @@ public class CartPage {
         return this;
     }
 
-    public CartPage clearCart() {
-        removeItemFromCartButton.shouldBe(visible).click();
+    public CartPage removeItemFromCart() {
+        ElementsCollection removeButtons = $$("a[aria-label='Remove this item']");
+
+        while (!removeButtons.isEmpty()) {
+            int initialSize = removeButtons.size();
+
+            SelenideElement button = removeButtons.first();
+            button.scrollTo().click();
+
+            // Ждём, что количество кнопок уменьшилось
+            removeButtons.shouldHave(size(initialSize - 1), Duration.ofSeconds(5));
+        }
         return this;
     }
 

@@ -28,4 +28,19 @@ public class ProductAddToCartHelper {
 
         availableAddToCartButtons.get(2).click();
     }
+
+    public void addTwoPhonesToCart() {
+        header.cartTab.click();
+        if (cart.removeCouponButton.exists()) {
+            cart.clickRemoveCouponButton();
+        }
+        header.catalogTab.shouldBe(visible, Duration.ofSeconds(7));
+        header.catalogTab.scrollIntoView(true);
+        header.hoverOnCatalogTab();
+        header.hoverOnElectronics();
+        header.phonesLink.click();
+
+        availableAddToCartButtons.get(2).click();
+        availableAddToCartButtons.get(3).click();
+    }
 }
