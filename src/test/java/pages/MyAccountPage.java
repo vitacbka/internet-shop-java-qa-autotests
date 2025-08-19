@@ -21,8 +21,7 @@ public class MyAccountPage {
             usernameIsRequiredError = $(".woocommerce-error"),
             invalidUserNameOrPasswordMessage = $(".woocommerce-error"),
             helloMessageText = $(".woocommerce-MyAccount-content p"),
-            logoutButton = $(".woocommerce-MyAccount-navigation a[href*='logout']"),
-            unknownEmailAddressErrorMessage = $(".woocommerce-error");
+            logoutButton = $(".woocommerce-MyAccount-navigation a[href*='logout']");
 
     public void openAuthPage() {
         open(MY_ACCOUNT_PAGE_URL);
@@ -31,10 +30,6 @@ public class MyAccountPage {
     public MyAccountPage myAccountPageTitleShouldBeVisible(String title) {
         myAccountPageTitle.shouldBe(visible).shouldHave(text(title));
         return this;
-    }
-
-    public void forgotPasswordLinkClick() {
-        forgotPasswordLink.shouldBe(visible).click();
     }
 
     public MyAccountPage enterCredentials(String usernameOrEmail, String password) {

@@ -13,7 +13,8 @@ public class CatalogPage {
             actualCategoryPageTitleText = $(".entry-title.ak-container"),
             categoryItemsList = $("#primary"),
             categoryNamesList = $("#woocommerce_product_categories-2"),
-            sortDropdown = $("select.orderby"),
+            sortDropdown = $("select.orderby option"),
+            itemsNotFoundMessage = $(".woocommerce-info"),
             successMessage = $(".woocommerce-message");
 
     private final ElementsCollection categoryLinks = $$("#woocommerce_product_categories-2 a");
@@ -89,6 +90,11 @@ public class CatalogPage {
     public CatalogPage isSearchResultVisibleAndContainsSearchText(String searchText) {
         actualCategoryPageTitleText.shouldBe(visible)
                 .shouldHave(text(searchText));
+        return this;
+    }
+
+    public CatalogPage isNonExistingSearchResultVisible(String notFoundMessage) {
+        itemsNotFoundMessage.shouldBe(visible).shouldHave(text(notFoundMessage));
         return this;
     }
 }

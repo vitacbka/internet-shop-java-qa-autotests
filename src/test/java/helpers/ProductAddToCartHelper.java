@@ -15,7 +15,7 @@ public class ProductAddToCartHelper {
 
     ElementsCollection availableAddToCartButtons = $$(".product.instock .add_to_cart_button");
 
-    public ProductAddToCartHelper addPhoneAtCart() {
+    public void addPhoneAtCart() {
         header.cartTab.click();
         if (cart.removeCouponButton.exists()) {
             cart.clickRemoveCouponButton();
@@ -27,6 +27,5 @@ public class ProductAddToCartHelper {
         header.phonesLink.click();
 
         availableAddToCartButtons.get(2).click();
-        return this;
     }
 }

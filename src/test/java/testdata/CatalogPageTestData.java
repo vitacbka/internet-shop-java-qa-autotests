@@ -28,5 +28,8 @@ public class CatalogPageTestData {
     };
 
     // Дополнительные константы для тестов
-    public static final String TELEVISION_TEXT_FOR_SEARCH = "Телевизоры";
+    public static final String
+            TELEVISION_TEXT_FOR_SEARCH = "Телевизоры",
+            EXPECTED_NOT_FOUND_ITEMS_TEXT = "По вашему запросу товары не найдены.",
+            NON_EXISTENT_TEXT_FOR_SEARCH  = "bla-bla-bla";
 }
