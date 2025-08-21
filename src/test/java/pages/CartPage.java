@@ -7,6 +7,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.url;
 import static readproperties.ConfigProvider.*;
 
 public class CartPage {
@@ -39,9 +40,14 @@ public class CartPage {
         return this;
     }
 
-    public CartPage cartPageTitleShouldBeVisible(String title) {
+    public CartPage isOmCartPage(String title, String expectedUrl) {
         cartPageTitle.shouldBe(visible).shouldHave(text(title));
+        webdriver().shouldHave(url(expectedUrl));
         return this;
+    }
+
+    public CartPage clickOnRestoreItemButton() {
+        restoreItemButton.shouldBe(visible).click();
     }
 
     public CartPage removeItemFromCart() {
@@ -52,7 +58,6 @@ public class CartPage {
 
             SelenideElement button = removeButtons.first();
             button.scrollTo().click();
-
             // Ждём, что количество кнопок уменьшилось
             removeButtons.shouldHave(size(initialSize - 1), Duration.ofSeconds(5));
         }

@@ -3,6 +3,7 @@ package tests;
 import org.junit.jupiter.api.*;
 import pages.*;
 
+import static readproperties.ConfigProvider.CART_PAGE_URL;
 import static testdata.HeaderTestData.*;
 import static testdata.MainPageTestData.EXPECTED_MAIN_PAGE_TITLE_TEXT;
 import static testdata.MyAccountPageTestData.EXPECTED_MY_ACCOUNT_TITLE;
@@ -46,14 +47,14 @@ public class HeaderTests extends BaseTest{
     @DisplayName("Click on cart tab should open cart page")
     void clickOnCartHeaderTabTest() {
         headerPage.clickCartTab();
-        cartPage.cartPageTitleShouldBeVisible(EXPECTED_CART_PAGE_TITLE);
+        cartPage.isOmCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
     }
 
     @Test
     @DisplayName("Click on place on order tab should open cart page")
     void clickOnPlaceHeaderTabTest() {
         headerPage.clickPlaceAnOrderTab();
-        cartPage.cartPageTitleShouldBeVisible(EXPECTED_CART_PAGE_TITLE);
+        cartPage.isOmCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
     }
 
     @Test

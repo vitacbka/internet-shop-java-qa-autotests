@@ -1,4 +1,33 @@
-.build
-.gradle
-.idea
-.out
+# Compiled class files
+*.class
+bin/
+build/
+out/
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Logs
+*.log
+logs/
+
+# Reports
+reports/
+test-results/
+test-output/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# External Libraries
+External Libraries/
