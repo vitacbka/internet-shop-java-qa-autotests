@@ -15,7 +15,7 @@ public class CartPage {
     public final SelenideElement
             cartPageTitle = $("span.current"),
             cartIsEmptyMessage = $("p.cart-empty"),
-            itemInCart = $(".woocommerce-cart-form__cart-item"),
+            itemNameInCart = $(".woocommerce-cart-form__cart-item"),
             toPayPrice = $("tr[class='order-total'] bdi:nth-child(1)"),
             couponInputField = $("#coupon_code"),
             removeCouponButton = $(".woocommerce-remove-coupon"),
@@ -40,14 +40,24 @@ public class CartPage {
         return this;
     }
 
-    public CartPage isOmCartPage(String title, String expectedUrl) {
+    public CartPage isOnCartPage(String title, String expectedUrl) {
         cartPageTitle.shouldBe(visible).shouldHave(text(title));
         webdriver().shouldHave(url(expectedUrl));
         return this;
     }
 
+    public CartPage itemInCartShouldBeVisible(String itemName) {
+        itemNameInCart.shouldBe(visible).shouldHave(text(itemName));
+        return this;
+    }
+
+    public String getItemNameInCart() {
+        return itemNameInCart.shouldBe(visible).getText();
+    }
+
     public CartPage clickOnRestoreItemButton() {
         restoreItemButton.shouldBe(visible).click();
+        return this;
     }
 
     public CartPage removeItemFromCart() {
@@ -61,11 +71,6 @@ public class CartPage {
             // Ждём, что количество кнопок уменьшилось
             removeButtons.shouldHave(size(initialSize - 1), Duration.ofSeconds(5));
         }
-        return this;
-    }
-
-    public CartPage productNameInCartShouldBeVisible() {
-        productNameInCart.shouldBe(visible);
         return this;
     }
 
@@ -108,7 +113,8 @@ public class CartPage {
     }
 
     public CartPage waitForPriceChange(double oldPrice) {
-        toPayPrice.shouldNotHave(text(String.valueOf(oldPrice)), Duration.ofSeconds(10));
+        Wait().withTimeout(Duration.ofSeconds(10))
+                .until(driver -> getTotalPriceAsDouble() != oldPrice);
         return this;
     }
 
@@ -138,7 +144,7 @@ public class CartPage {
         return this;
     }
 
-    public CartPage cartIsEmptyMessage(String message) {
+    public CartPage cartIsEmptyMessageShouldBeVisible(String message) {
         cartIsEmptyMessage.shouldBe(visible).shouldHave(text(message));
         return this;
     }

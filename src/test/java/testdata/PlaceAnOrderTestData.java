@@ -26,6 +26,5 @@ public class PlaceAnOrderTestData {
             STATE_REQUIRED_ERROR = "Область для выставления счета обязательное поле.",
             POSTCODE_REQUIRED_ERROR = "Почтовый индекс для выставления счета обязательное поле.",
             PHONE_INVALID_ERROR = "неверный номер телефона.",
-            PHONE_REQUIRED_ERROR = "Телефон для выставления счета обязательное поле.",
             EMAIL_REQUIRED_ERROR = "Адрес почты для выставления счета обязательное поле.";
 }

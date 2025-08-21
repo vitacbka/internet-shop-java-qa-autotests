@@ -47,14 +47,14 @@ public class HeaderTests extends BaseTest{
     @DisplayName("Click on cart tab should open cart page")
     void clickOnCartHeaderTabTest() {
         headerPage.clickCartTab();
-        cartPage.isOmCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
+        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
     }
 
     @Test
     @DisplayName("Click on place on order tab should open cart page")
     void clickOnPlaceHeaderTabTest() {
         headerPage.clickPlaceAnOrderTab();
-        cartPage.isOmCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
+        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
     }
 
     @Test

@@ -7,12 +7,14 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class FooterPage {
 
     public final SelenideElement
             footerContactInfo = $(".banner-text.wow.fadeInLeft"),
-            footerWidgetLinksTitle = $("#pages-2");
+            footerWidgetLinksTitle = $("#pages-2"),
+            footerPlaceAnOrderLink = $( "footer a[href*='checkout']");
 
     public ElementsCollection footerPageLinks = $$("#pages-2 ul li a");
 
@@ -20,6 +22,11 @@ public class FooterPage {
         footerContactInfo.scrollTo()
                 .shouldBe(visible)
                 .shouldHave(text(expectedText));
+    }
+
+    public FooterPage clickOnPlaceAnOrderLink() {
+        footerPlaceAnOrderLink.shouldBe(visible).click();
+        return this;
     }
 
     public void widgetLinksTitleInFooterShouldBeVisible(String expectedTitle) {

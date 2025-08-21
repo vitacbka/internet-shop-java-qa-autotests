@@ -82,21 +82,17 @@ public class FooterTests extends BaseTest {
     @MethodSource("checkoutLinkProvider")
     @DisplayName("Should redirect from checkout to cart if empty, or open checkout if has items")
     void shouldRedirectCheckoutBasedOnCartState(boolean isCartNotEmpty) {
+
         footerPage.footerWidgetLinksTitle.scrollIntoView(true);
         if (isCartNotEmpty) {
             addToCartHelper.addPhoneAtCart();
         }
-        $(byText("Оформление заказа")).click();
+       footerPage.clickOnPlaceAnOrderLink();
 
         if (isCartNotEmpty) {
-            placeAnOrderPage.isOnPlaceAnOrderPage(PLACE_AN_ORDER_URL, EXPECTED_PLACE_AN_ORDER_PAGE_TITLE);
+            placeAnOrderPage.isOnPlaceAnOrderPage(EXPECTED_PLACE_AN_ORDER_PAGE_TITLE, PLACE_AN_ORDER_URL);
         } else {
-            cartPage.isOmCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
+            cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
         }
-
-//            assertThat(PLACE_AN_ORDER_URL)
-//                    .as("URL не соответствует ожидаемому.")
-//                    .equals(WebDriverRunner.url());
-//        }
     }
 }

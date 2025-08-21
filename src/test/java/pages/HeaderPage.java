@@ -65,6 +65,11 @@ public class HeaderPage {
         return this;
     }
 
+    public HeaderPage phoneLinkClick() {
+        phonesLink.shouldBe(visible).click();
+        return this;
+    }
+
     public void catalogTabClick() {
         catalogTab.click();
     }
