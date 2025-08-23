@@ -20,13 +20,14 @@ public class HeaderTests extends BaseTest{
     @BeforeEach
     void setup() {
         mainPage.openMainPage();
+        headerPage.verifyMainTabsTextIsDisplayed();
     }
 
     @Test
     @DisplayName("Click on home tab should open main page")
     void mainMenuTabsShouldBeVisibleTest() {
         headerPage.homeTabClick();
-        mainPage.mainPageTitleShouldBeVisible(EXPECTED_MAIN_PAGE_TITLE_TEXT);
+        mainPage.isOnMainPage(EXPECTED_MAIN_PAGE_TITLE_TEXT);
     }
 
     @Test
@@ -66,29 +67,26 @@ public class HeaderTests extends BaseTest{
     @Test
     @DisplayName("Catalog submenu should be displayed with correct text")
     void catalogSubmenuShouldDisplayCorrectTextTest() {
-        headerPage.hoverOnCatalogTab();
-        headerPage.verifyCatalogSubmenuText();
+        headerPage
+                .hoverOnCatalogTab()
+                .verifyCatalogSubmenuText();
     }
 
     @Test
     @DisplayName("Household appliances submenu should be displayed with correct text")
     void householdAppliancesShouldBeDisplayedWithCorrectTextTest() {
-        headerPage.hoverOnCatalogTab();
-        headerPage.hoverOnHouseholdAppliances();
-        headerPage.verifyHouseholdAppliancesText();
+        headerPage
+                .hoverOnCatalogTab()
+                .hoverOnHouseholdAppliances()
+                .verifyHouseholdAppliancesText();
     }
 
     @Test
     @DisplayName("Electronics submenu should be displayed with correct text")
     void electronicsSubmenuShouldBeDisplayedWithCorrectTextTest() {
-        headerPage.hoverOnCatalogTab();
-        headerPage.hoverOnElectronics();
-        headerPage.verifyElectronicsSubmenuTexts();
-    }
-
-    @Test
-    @DisplayName("Main page tabs should be visible")
-    void mainPageTabsShouldBeVisible() {
-        headerPage.verifyMainTabsText();
+        headerPage
+                .hoverOnCatalogTab()
+                .hoverOnElectronics()
+                .verifyElectronicsSubmenuTexts();
     }
 }

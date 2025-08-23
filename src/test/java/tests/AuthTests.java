@@ -37,7 +37,7 @@ public class AuthTests extends BaseTest {
     }
 
     @Test
-    @DisplayName("User should be logged with valid username and walid password without remember me checkbox and should be displayed Hello message title")
+    @DisplayName("User should be logged with valid username and walid password without remember me checkbox and should be displayed Hello message")
     void userShouldBeLoggedInTest() {
         myAccount
                 .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
@@ -49,7 +49,8 @@ public class AuthTests extends BaseTest {
     @Test
     @DisplayName("Login button at header should be displayed after user logout")
     void loginButtonLinkShouldBeDisplayedAfterUserLogout() {
-        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
+        myAccount
+                .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
                 .clickLoginButton()
                 .clickLogoutButton()
                 .myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
@@ -59,7 +60,8 @@ public class AuthTests extends BaseTest {
     @Test
     @DisplayName("Welcome message should not be displayed after user logout")
     void logoutTest() {
-        myAccount.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
+        myAccount
+                .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
                 .clickLoginButton()
                 .helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT)
                 .clickLogoutButton()
@@ -69,7 +71,8 @@ public class AuthTests extends BaseTest {
     @Test
     @DisplayName("Password is required error message should be displayed when user does not enter password")
     void passwordIsRequiredErrorMessageShouldBeDisplayedTest() {
-        myAccount.enterCredentials(VALID_USER_LOGIN, "")
+        myAccount
+                .enterCredentials(VALID_USER_LOGIN, "")
                 .clickLoginButton()
                 .errorCredentialsMessageShouldBeVisible(myAccount.passwordIsRequiredError,
                 EXPECTED_PASSWORD_IS_REQUIRED_ERROR);
@@ -78,7 +81,8 @@ public class AuthTests extends BaseTest {
     @Test
     @DisplayName("Username is required error message should be displayed when user does not enter username")
     void usernameIsRequiredErrorMessageShouldBeDisplayedTest() {
-        myAccount.enterCredentials("", VALID_USER_PASSWORD)
+        myAccount
+                .enterCredentials("", VALID_USER_PASSWORD)
                 .clickLoginButton()
                 .errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
                 EXPECTED_USERNAME_IS_REQUIRED_ERROR);
@@ -87,9 +91,10 @@ public class AuthTests extends BaseTest {
     @Test
     @DisplayName("Error message should be displayed when user click login button with empty username and empty password")
     void errorMessageShouldBeDisplayedWhenClickLoginButtonWithoutCredentialsTest() {
-        myAccount.enterCredentials("", "");
-        myAccount.clickLoginButton();
-        myAccount.errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
+        myAccount
+                .enterCredentials("", "")
+                .clickLoginButton()
+                .errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
                 EXPECTED_USERNAME_IS_REQUIRED_ERROR);
     }
 
@@ -130,7 +135,8 @@ public class AuthTests extends BaseTest {
         cookies
                 .saveCookies()
                 .closeWebDriver();
-        myAccount.openAuthPage();
+        myAccount
+                .openAuthPage();
         cookies
                 .pasteCookies()
                 .refresh();

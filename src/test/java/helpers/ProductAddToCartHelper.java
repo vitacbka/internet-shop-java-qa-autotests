@@ -20,15 +20,16 @@ public class ProductAddToCartHelper {
     ElementsCollection productNameElements = $$(".product.instock h3");
 
     public void addPhoneAtCart() {
-        header.cartTab.click();
+        header.clickCartTab();
         if (cart.removeCouponButton.exists()) {
             cart.clickRemoveCouponButton();
         }
-        header.catalogTab.shouldBe(visible, Duration.ofSeconds(7));
-        header.catalogTab.scrollIntoView(true);
-        header.hoverOnCatalogTab();
-        header.hoverOnElectronics();
-        header.phonesLink.click();
+        header
+                .scrollToCatalogTab()
+                .scrollToCatalogTab()
+                .hoverOnCatalogTab()
+                .hoverOnElectronics()
+                .clickOnPhoneLink();
 
         availableAddToCartButtons.get(2).click();
         addedProductNames.add(productNameElements.get(2).getText());

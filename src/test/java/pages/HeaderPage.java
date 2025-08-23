@@ -3,6 +3,8 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import testdata.HeaderTestData;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static testdata.HeaderTestData.*;
@@ -70,16 +72,19 @@ public class HeaderPage {
         return this;
     }
 
-    public void catalogTabClick() {
+    public HeaderPage catalogTabClick() {
         catalogTab.click();
+        return this;
     }
 
-    public void homeTabClick() {
+    public HeaderPage homeTabClick() {
         homeTab.click();
+        return this;
     }
 
-    public void accountTabClick() {
+    public HeaderPage accountTabClick() {
         myAccountTab.click();
+        return this;
     }
 
     public HeaderPage clickCartTab() {
@@ -87,51 +92,69 @@ public class HeaderPage {
         return this;
     }
 
-    public void clickPlaceAnOrderTab() {
+    public HeaderPage clickPlaceAnOrderTab() {
         placeAnOrderTab.click();
+        return this;
     }
 
     public void headerContactInfoShouldBeVisible(String contactInfoText) {
         headerContactInfo.shouldBe(visible).shouldHave(text(contactInfoText));
     }
 
-    public void hoverOnCatalogTab() {
+    public HeaderPage hoverOnCatalogTab() {
         catalogTab.hover();
+        return this;
     }
 
-    public void hoverOnHouseholdAppliances() {
+    public HeaderPage hoverOnHouseholdAppliances() {
         appliancesSubMenu.hover();
+        return this;
     }
 
-    public void hoverOnElectronics() {
+    public HeaderPage hoverOnElectronics() {
         electronicsSubMenu.hover();
+        return this;
     }
 
-    public void verifyMainTabsText() {
+    public HeaderPage verifyMainTabsTextIsDisplayed() {
         homeTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_MAIN_PAGE_TAB));
         catalogTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CATALOG_TAB));
         myAccountTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_MY_ACCOUNT_TAB));
         cartTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CART_TAB));
         placeAnOrderTab.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_PLACE_AN_ORDER_TAB));
+        return this;
     }
 
-    public void verifyCatalogSubmenuText() {
+    public HeaderPage verifyCatalogSubmenuText() {
         appliancesSubMenu.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_APPLIANCES_TEXT));
         electronicsSubMenu.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_ELECTRONICS_TEXT));
         booksLink.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_BOOKS_TAB));
         clothesLink.shouldBe(visible).shouldHave(text(HeaderTestData.EXPECTED_CLOSES_TAB));
+        return this;
     }
 
-    public void verifyHouseholdAppliancesText() {
+    public HeaderPage verifyHouseholdAppliancesText() {
         refrigeratorsLink.shouldBe(visible).shouldHave(text(EXPECTED_REFRIGERATOR_TAB));
         washingMachinesLink.shouldBe(visible).shouldHave(text(EXPECTED_WASHING_MACHINE_TAB));
+        return this;
     }
 
-    public void verifyElectronicsSubmenuTexts() {
+    public HeaderPage verifyElectronicsSubmenuTexts() {
         phonesLink.shouldBe(visible).shouldHave(text(EXPECTED_PHONES_TAB));
         tabletsLink.shouldBe(visible).shouldHave(text(EXPECTED_TABLETS_TAB));
         tvLink.shouldBe(visible).shouldHave(text(EXPECTED_TELEVISION_TAB));
         photoVideoLink.shouldBe(visible).shouldHave(text(EXPECTED_PHOTO_VIDEO_TAB));
         watchesLink.shouldBe(visible).shouldHave(text(EXPECTED_WATCH_TAB));
+        return this;
+    }
+
+    public HeaderPage scrollToCatalogTab() {
+        catalogTab.shouldBe(visible, Duration.ofSeconds(7)).scrollIntoView(true);
+        return this;
+    }
+
+    public HeaderPage clickOnPhoneLink() {
+        phonesLink.shouldBe(visible).click();
+        return this;
     }
 }

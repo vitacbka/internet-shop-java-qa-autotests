@@ -20,5 +20,4 @@ public class ClearCartHelper {
         cart.cartIsEmptyMessage.shouldBe(visible);
         return this;
     }
-
 }
