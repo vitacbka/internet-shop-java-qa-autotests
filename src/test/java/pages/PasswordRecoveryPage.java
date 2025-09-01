@@ -3,8 +3,9 @@ package pages;
 import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.url;
+import static readproperties.ConfigProvider.PASSWORD_RECOVERY_URL;
 
 public class PasswordRecoveryPage {
 
@@ -19,7 +20,8 @@ public class PasswordRecoveryPage {
         resetPasswordButton.click();
     }
 
-    public void passwordRecoveryPageTitleShouldBeVisible(String title) {
+    public void isOnPasswordRecoveryPage(String title) {
+        webdriver().shouldHave(url(PASSWORD_RECOVERY_URL));
         passwordRecoveryPageTitle.shouldBe(visible).shouldHave(text(title));
     }
 
@@ -29,7 +31,6 @@ public class PasswordRecoveryPage {
     public void errorPasswordSendMessageShouldBeVisible(SelenideElement element, String message) {
         element.shouldBe(visible).shouldHave(text(message));
     }
-
 
     public void enterUsernameOrEmail (SelenideElement element, String username) {
         element.setValue(username);

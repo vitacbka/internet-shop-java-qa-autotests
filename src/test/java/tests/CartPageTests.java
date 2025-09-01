@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import pages.CartPage;
 import pages.HeaderPage;
 import pages.MyAccountPage;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static readproperties.ConfigProvider.*;
 import static testdata.CartPageTestData.*;
@@ -18,22 +21,25 @@ public class CartPageTests extends BaseTest {
     HeaderPage header = new HeaderPage();
     MyAccountPage myAccountPage = new MyAccountPage();
     ClearCartHelper clearCartHelper = new ClearCartHelper();
-    private String addedProductName;
 
     @BeforeEach
     void setUp() {
         myAccountPage.login(VALID_USER_LOGIN, VALID_USER_PASSWORD);
         clearCartHelper.removeCouponAndClearCart();
-        productAddToCartHelper.addPhoneAtCart();
+        productAddToCartHelper.addPhoneToCart();
         header.clickCartTab();
-        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
-        addedProductName = cartPage.getItemNameInCart();
+        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE);
     }
 
     @Test
     @DisplayName("Added in cart product name should be visible")
     void addedInCartProductNameShouldBeVisible() {
-        cartPage.itemInCartShouldBeVisible(addedProductName);
+        List<String> addedProductNames = productAddToCartHelper.getAddedProductNames();
+        assertFalse(addedProductNames.isEmpty(), "Сипсок товаров н едолжен быть пустым");
+
+        String expectedItemNAme = addedProductNames.get(0);
+
+        cartPage.verifyItemInCartVisible(expectedItemNAme);
     }
 
     @Test
@@ -41,17 +47,20 @@ public class CartPageTests extends BaseTest {
     void cartShouldBeEmptyAfterClearTest() {
         cartPage
                 .removeItemFromCart()
-                .cartIsEmptyMessageShouldBeVisible(EXPECTED_CART_IS_EMPTY_MESSAGE);
+                .verifyEmptyCartMessage(EXPECTED_CART_IS_EMPTY_MESSAGE);
     }
 
     @Test
     @DisplayName("Item should be restored after click on restore button")
     void itemShouldBeRestoredAfterClickOnRestoreButtonTest() {
+        List<String> addedProductNames = productAddToCartHelper.getAddedProductNames();
+        assertFalse(addedProductNames.isEmpty(), "Сипсок товаров н едолжен быть пустым");
+        String expectedItemName = addedProductNames.get(0);
+        clearCartHelper.clearCart();
         cartPage
-                .removeItemFromCart()
-                .cartIsEmptyMessageShouldBeVisible(EXPECTED_CART_IS_EMPTY_MESSAGE)
+                .verifyEmptyCartMessage(EXPECTED_CART_IS_EMPTY_MESSAGE)
                 .clickOnRestoreItemButton()
-                .itemInCartShouldBeVisible(addedProductName);
+                .verifyItemInCartVisible(expectedItemName);
     }
 
     @Test
@@ -60,7 +69,7 @@ public class CartPageTests extends BaseTest {
         cartPage
                 .setCouponData(VALID_COUPON)
                 .clickOnApplyCouponButton()
-                .successfulCouponMessageShouldBeVisible(EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE);
+                .verifySuccessfulCouponMessage(EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE);
     }
 
     @Test
@@ -69,8 +78,7 @@ public class CartPageTests extends BaseTest {
         cartPage
                 .setCouponData(INVALID_COUPON)
                 .clickOnApplyCouponButton()
-                .invalidCouponMessageShouldBeVisible(EXPECTED_ERROR_INVALID_COUPON_MESSAGE);
-        System.out.println(cartPage.errorCouponMessage.text());
+                .verifyInvalidCouponMessage(EXPECTED_ERROR_INVALID_COUPON_MESSAGE);
     }
 
     @Test
@@ -79,7 +87,7 @@ public class CartPageTests extends BaseTest {
         cartPage
                 .setCouponData("")
                 .clickOnApplyCouponButton()
-                .emptyCouponMessageShouldBeVisible(EXPECTED_EMPTY_COUPON_MESSAGE);
+                .verifyEmptyCouponMessage(EXPECTED_EMPTY_COUPON_MESSAGE);
     }
 
     @Test
@@ -88,21 +96,24 @@ public class CartPageTests extends BaseTest {
         cartPage
                 .setCouponData(VALID_COUPON)
                 .clickOnApplyCouponButton()
-                .successfulCouponMessageShouldBeVisible(EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE)
+                .verifySuccessfulCouponMessage(EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE)
                 .clickRemoveCouponButton()
-                .deletedCouponMessageShouldBeVisible(EXPECTED_COUPON_IS_REMOVED_MESSAGE);
+                .verifyDeletedCouponMessage(EXPECTED_COUPON_IS_REMOVED_MESSAGE);
     }
 
     @Test
     @DisplayName("Price should be changed after apply valid coupon")
     void priceShouldBeChangedAfterApplyValidCouponTest() {
         header.clickCartTab();
-        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
+        cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE);
+
         double beforeCouponPrice = cartPage.getTotalPriceAsDouble();
 
-        cartPage.setCouponData(VALID_COUPON);
-        cartPage.clickOnApplyCouponButton();
-        cartPage.waitForPriceChange(beforeCouponPrice);
+        cartPage
+                .setCouponData(VALID_COUPON)
+                .clickOnApplyCouponButton()
+                .verifySuccessfulCouponMessage(EXPECTED_SUCCESSFUL_APPLY_COUPON_MESSAGE)
+                .waitForPriceChange(beforeCouponPrice);
         double afterCouponPrice = cartPage.getTotalPriceAsDouble();
 
         assertTrue(beforeCouponPrice > afterCouponPrice,
@@ -114,6 +125,6 @@ public class CartPageTests extends BaseTest {
     void errorMessageShouldBeDisplayedAfterReuseCoupon() {
         cartPage
                 .twiceApplyValidCoupon(VALID_COUPON)
-                .alreadyApplyCouponMessageShouldBeVisible(EXPECTED_COUPON_ALREADY_APPLIED_MESSAGE);
+                .veifyAlreadyApplyCouponMessage(EXPECTED_COUPON_ALREADY_APPLIED_MESSAGE);
     }
 }

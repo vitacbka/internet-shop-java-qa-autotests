@@ -20,7 +20,7 @@ public class PasswordRecoveryTests extends BaseTest{
     @DisplayName("Page title should be displayed")
     void pageTitleShouldBeDisplayedTest() {
         passwordRecovery
-                .passwordRecoveryPageTitleShouldBeVisible(EXPECTED_PASSWORD_RECOVERY_TITLE);
+                .isOnPasswordRecoveryPage(EXPECTED_PASSWORD_RECOVERY_TITLE);
     }
 
     @Test

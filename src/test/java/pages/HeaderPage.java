@@ -7,6 +7,7 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 import static testdata.HeaderTestData.*;
 
 public class HeaderPage {
@@ -14,7 +15,7 @@ public class HeaderPage {
     public SelenideElement
             mainMenu = $("ul#menu-primary-menu"),
             homeTab = $("li#menu-item-26 a"),
-            catalogTab = $("li#menu-item-46 a"),
+            catalogTab = $x("//a[contains(@href, 'catalog') and contains(., 'Каталог')]"),
             myAccountTab = $("li#menu-item-30 a"),
             cartTab = $("li#menu-item-29 a"),
             placeAnOrderTab = $("li#menu-item-31 a"),
@@ -22,7 +23,10 @@ public class HeaderPage {
             loginLinkButton = $(".account"),
             welcomeTextAtHeader = $(".welcome-user"),
             searchField = $(".search-field"),
-            logoutLinkButton = $(".logout");
+            logoutLinkButton = $(".logout"),
+
+            //Приветственное сообзение авторизированного пользователя
+            welcomeUserMessageLocator = $(".welcome-user");
     
 
     public SelenideElement
@@ -51,7 +55,7 @@ public class HeaderPage {
         loginLinkButton.shouldBe(visible).shouldBe(clickable).click();
     }
 
-    public HeaderPage loginButtonShouldBeVisible(String loginButtonText) {
+    public HeaderPage verifyLoginButtonVisibleInHeader(String loginButtonText) {
         loginLinkButton.shouldBe(visible)
                 .shouldHave(text(loginButtonText));
         return this;
@@ -93,7 +97,7 @@ public class HeaderPage {
     }
 
     public HeaderPage clickPlaceAnOrderTab() {
-        placeAnOrderTab.click();
+        placeAnOrderTab.shouldBe(visible).click();
         return this;
     }
 
@@ -134,17 +138,17 @@ public class HeaderPage {
     }
 
     public HeaderPage verifyHouseholdAppliancesText() {
-        refrigeratorsLink.shouldBe(visible).shouldHave(text(EXPECTED_REFRIGERATOR_TAB));
-        washingMachinesLink.shouldBe(visible).shouldHave(text(EXPECTED_WASHING_MACHINE_TAB));
+        refrigeratorsLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_REFRIGERATOR_TAB));
+        washingMachinesLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_WASHING_MACHINE_TAB));
         return this;
     }
 
     public HeaderPage verifyElectronicsSubmenuTexts() {
-        phonesLink.shouldBe(visible).shouldHave(text(EXPECTED_PHONES_TAB));
-        tabletsLink.shouldBe(visible).shouldHave(text(EXPECTED_TABLETS_TAB));
-        tvLink.shouldBe(visible).shouldHave(text(EXPECTED_TELEVISION_TAB));
-        photoVideoLink.shouldBe(visible).shouldHave(text(EXPECTED_PHOTO_VIDEO_TAB));
-        watchesLink.shouldBe(visible).shouldHave(text(EXPECTED_WATCH_TAB));
+        phonesLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_PHONES_TAB));
+        tabletsLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_TABLETS_TAB));
+        tvLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_TELEVISION_TAB));
+        photoVideoLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_PHOTO_VIDEO_TAB));
+        watchesLink.shouldBe(visible, Duration.ofSeconds(10)).shouldHave(text(EXPECTED_WATCH_TAB));
         return this;
     }
 
@@ -155,6 +159,26 @@ public class HeaderPage {
 
     public HeaderPage clickOnPhoneLink() {
         phonesLink.shouldBe(visible).click();
+        return this;
+    }
+
+    public HeaderPage verifyWelcomeUserMessageAtHeader(String welcomeUserMessage) {
+        welcomeUserMessageLocator.shouldBe(visible).shouldHave(text(welcomeUserMessage));
+        return this;
+    }
+
+    public HeaderPage welcomeUserMessageShouldBeNotVisible() {
+        welcomeUserMessageLocator.shouldNotBe(visible);
+        return this;
+    }
+
+    public HeaderPage clickCatalogTab() {
+        catalogTab.shouldBe(visible).click();
+        return this;
+    }
+
+    public HeaderPage verifyLoginLinkButtonVisible(String expectedLoginButtonText) {
+        loginLinkButton.shouldBe(visible).shouldHave(text(expectedLoginButtonText));
         return this;
     }
 }

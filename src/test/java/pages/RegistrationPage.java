@@ -38,7 +38,7 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage fillRegistrationFormWithExistingData(String username, String password, String email ) {
+    public RegistrationPage fillRegistrationForm(String username, String password, String email ) {
         usernameInputField.shouldBe(visible)
                 .setValue(username)
                 .shouldHave(value(username));

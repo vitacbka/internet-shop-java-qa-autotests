@@ -5,6 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.url;
+import static readproperties.ConfigProvider.CART_PAGE_URL;
 import static readproperties.ConfigProvider.CATALOG_PAGE_URL;
 
 public class CatalogPage {
@@ -15,7 +17,7 @@ public class CatalogPage {
             categoryNamesList = $("#woocommerce_product_categories-2"),
             sortDropdown = $("select.orderby option"),
             itemsNotFoundMessage = $(".woocommerce-info"),
-            successMessage = $(".woocommerce-message");
+            phonesLinkCategory = $x("//*[@id='woocommerce_product_categories-2'] //a[contains(@href, 'phones')]");
 
     private final ElementsCollection categoryLinks = $$("#woocommerce_product_categories-2 a");
 
@@ -27,13 +29,14 @@ public class CatalogPage {
         open(CATALOG_PAGE_URL);
         return this;
     }
-    public CatalogPage catalogPageTitleShouldBeVisible(String title) {
-        actualCategoryPageTitleText.shouldBe(visible).shouldHave(text(title));
+    public CatalogPage isOnCatalogPage(String title) {
+        pageTitle.shouldBe(visible).shouldHave(text(title));
+        webdriver().shouldHave(url(CATALOG_PAGE_URL));
         return this;
     }
 
-    public CatalogPage pageTitleGetText() {
-        pageTitle.text();
+    public CatalogPage catalogPageTitleShouldBeVisible(String title) {
+        actualCategoryPageTitleText.shouldBe(visible).shouldHave(text(title));
         return this;
     }
 
@@ -48,6 +51,7 @@ public class CatalogPage {
         }
         return this;
     }
+
     public CatalogPage categoryItemsListShouldBeVisible() {
         categoryItemsList.shouldBe(visible);
         categoryItemsList.shouldNotBe(empty);
@@ -56,35 +60,11 @@ public class CatalogPage {
 
     public CatalogPage selectCategory(String categoryName) {
         categoryLinks.findBy(exactText(categoryName))
-                .shouldBe(visible, enabled)
+                .shouldBe(visible)
                 .click();
 
         $("ul.products").shouldBe(visible);
         return this;
-    }
-
-    public void sortProducts(String sortOption) {
-        sortDropdown.selectOption(sortOption);
-    }
-
-    public String getProductNameByIndex(int index) {
-        return products.get(index).$(".woocommerce-loop-product__title").text();
-    }
-
-    public void addProductToCart(int index) {
-        products.get(index).$(".add_to_cart_button").click();
-    }
-
-    public void viewCartDetails(int index) {
-        products.get(index).$(".added_to_cart").click();
-    }
-
-    public int getProductsCount() {
-        return products.size();
-    }
-
-    public SelenideElement getSuccessMessage() {
-        return successMessage;
     }
 
     public CatalogPage isSearchResultVisibleAndContainsSearchText(String searchText) {
@@ -95,6 +75,11 @@ public class CatalogPage {
 
     public CatalogPage isNonExistingSearchResultVisible(String notFoundMessage) {
         itemsNotFoundMessage.shouldBe(visible).shouldHave(text(notFoundMessage));
+        return this;
+    }
+
+    public CatalogPage clickPhonesLinkCategory() {
+        phonesLinkCategory.shouldBe(visible).shouldHave(text("Телефоны")).click();
         return this;
     }
 }

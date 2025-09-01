@@ -2,10 +2,11 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.url;
 import static readproperties.ConfigProvider.*;
 
 public class MyAccountPage {
@@ -23,23 +24,33 @@ public class MyAccountPage {
             helloMessageText = $(".woocommerce-MyAccount-content p"),
             logoutButton = $(".woocommerce-MyAccount-navigation a[href*='logout']");
 
-    public void openAuthPage() {
+    public MyAccountPage openAuthPage() {
         open(MY_ACCOUNT_PAGE_URL);
+        return this;
     }
 
-    public MyAccountPage myAccountPageTitleShouldBeVisible(String title) {
+    public MyAccountPage isOnAuthPage(String title) {
+        myAccountPageTitle.shouldBe(visible).shouldHave(text(title));
+        webdriver().shouldHave(url(MY_ACCOUNT_PAGE_URL));
+        return this;
+
+    }
+
+    public MyAccountPage verifyMyAccountPageTitleIsVisible(String title) {
         myAccountPageTitle.shouldBe(visible).shouldHave(text(title));
         return this;
     }
 
     public MyAccountPage enterCredentials(String usernameOrEmail, String password) {
-        usernameInputField.setValue(usernameOrEmail);
-        passwordInputField.setValue(password);
+        usernameInputField.shouldBe(visible).setValue(usernameOrEmail);
+        passwordInputField.shouldBe(visible).setValue(password);
         return this;
     }
 
     public MyAccountPage clickRememberMeCheckbox() {
-        rememberMeCheckbox.click();
+        if (!rememberMeCheckbox.isSelected()) {
+            rememberMeCheckbox.click();
+        }
         return this;
     }
 
@@ -59,20 +70,25 @@ public class MyAccountPage {
         clickLoginButton();
     }
 
-    public MyAccountPage helloMessageShouldBeVisible(String helloMessage) {
+    public MyAccountPage verifyHelloMessageIsVisible(String helloMessage) {
         helloMessageText.shouldBe(visible).shouldHave(text(helloMessage));
         return this;
     }
 
     public void helloMessageShouldNotBeVisible() {
-        helloMessageText.shouldNotBe(visible);
+        helloMessageText.shouldNotBe(visible, Duration.ofSeconds(10));
     }
 
-    public void errorCredentialsMessageShouldBeVisible(SelenideElement element, String errorMessage) {
+    public void verifyErrorCredentialsMessageVisible(SelenideElement element, String errorMessage) {
         element.shouldBe(visible).shouldHave(text(errorMessage));
     }
 
     public void errorUsernameOrEmailMessageShouldBeDisplayed(SelenideElement element, String errorMessage) {
         element.shouldBe(visible).shouldHave(text(errorMessage));
+    }
+
+    public MyAccountPage cklickOnForgotPasswordLink(String expectedText) {
+        forgotPasswordLink.shouldBe(visible).shouldHave(text(expectedText)).click();
+        return this;
     }
 }

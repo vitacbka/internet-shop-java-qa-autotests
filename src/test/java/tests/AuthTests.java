@@ -1,30 +1,31 @@
 package tests;
 
 import org.junit.jupiter.api.*;
+import pages.MainPage;
 import pages.MyAccountPage;
 
 import static readproperties.ConfigProvider.*;
 import static testdata.HeaderTestData.EXPECTED_LOGIN_BUTTON_TEXT;
+import static testdata.MainPageTestData.EXPECTED_MAIN_PAGE_TITLE_TEXT;
 import static testdata.MyAccountPageTestData.*;
 import static testdata.HeaderTestData.EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT;
 
-import helpers.Cookies;
+import helpers.CookiesHelper;
 import pages.HeaderPage;
+import pages.PasswordRecoveryPage;
 
 public class AuthTests extends BaseTest {
     MyAccountPage myAccount = new MyAccountPage();
-    Cookies cookies = new Cookies();
+    CookiesHelper cookiesHelper = new CookiesHelper();
     HeaderPage header = new HeaderPage();
+    PasswordRecoveryPage passwordRecoveryPage = new PasswordRecoveryPage();
+    MainPage mainPage = new MainPage();
 
     @BeforeEach
     void setup() {
-        myAccount.openAuthPage();
-    }
-
-    @Test
-    @DisplayName("Login page title should be displayed")
-    void loginPageTitleShouldBeDisplayedTest() {
-        myAccount.myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
+        myAccount
+                .openAuthPage()
+                .isOnAuthPage(EXPECTED_MY_ACCOUNT_TITLE);
     }
 
     @Test
@@ -42,8 +43,8 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
                 .clickLoginButton()
-                .myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE)
-                .helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
+                .verifyMyAccountPageTitleIsVisible(EXPECTED_MY_ACCOUNT_TITLE)
+                .verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -53,8 +54,8 @@ public class AuthTests extends BaseTest {
                 .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
                 .clickLoginButton()
                 .clickLogoutButton()
-                .myAccountPageTitleShouldBeVisible(EXPECTED_MY_ACCOUNT_TITLE);
-        header.clickLoginButton();
+                .verifyMyAccountPageTitleIsVisible(EXPECTED_MY_ACCOUNT_TITLE);
+        header.verifyLoginButtonVisibleInHeader(EXPECTED_LOGIN_BUTTON_TEXT);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
                 .clickLoginButton()
-                .helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT)
+                .verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT)
                 .clickLogoutButton()
                 .helloMessageShouldNotBeVisible();
     }
@@ -74,8 +75,8 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_LOGIN, "")
                 .clickLoginButton()
-                .errorCredentialsMessageShouldBeVisible(myAccount.passwordIsRequiredError,
-                EXPECTED_PASSWORD_IS_REQUIRED_ERROR);
+                .verifyErrorCredentialsMessageVisible(myAccount.passwordIsRequiredError,
+                        EXPECTED_PASSWORD_IS_REQUIRED_ERROR);
     }
 
     @Test
@@ -84,8 +85,8 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials("", VALID_USER_PASSWORD)
                 .clickLoginButton()
-                .errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
-                EXPECTED_USERNAME_IS_REQUIRED_ERROR);
+                .verifyErrorCredentialsMessageVisible(myAccount.usernameIsRequiredError,
+                        EXPECTED_USERNAME_IS_REQUIRED_ERROR);
     }
 
     @Test
@@ -94,8 +95,8 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials("", "")
                 .clickLoginButton()
-                .errorCredentialsMessageShouldBeVisible(myAccount.usernameIsRequiredError,
-                EXPECTED_USERNAME_IS_REQUIRED_ERROR);
+                .verifyErrorCredentialsMessageVisible(myAccount.usernameIsRequiredError,
+                        EXPECTED_USERNAME_IS_REQUIRED_ERROR);
     }
 
     @Test
@@ -103,7 +104,7 @@ public class AuthTests extends BaseTest {
     void errorMessageShouldBeDisplayedWhenUserEnterInvalidPasswordTest() {
         myAccount.enterCredentials(VALID_USER_LOGIN, INVALID_USER_PASSWORD)
                 .clickLoginButton()
-                .errorCredentialsMessageShouldBeVisible(myAccount.invalidUserNameOrPasswordMessage,
+                .verifyErrorCredentialsMessageVisible(myAccount.invalidUserNameOrPasswordMessage,
                         EXPECTED_INVALID_PASSWORD_ERROR);
     }
 
@@ -112,7 +113,7 @@ public class AuthTests extends BaseTest {
     void errorMessageShouldBeDisplayedWhenUserLoginWithInvalidCredentialsTest() {
         myAccount.enterCredentials(INVALID_USER_LOGIN, INVALID_USER_PASSWORD)
                 .clickLoginButton()
-                .errorCredentialsMessageShouldBeVisible(myAccount.invalidUserNameOrPasswordMessage,
+                .verifyErrorCredentialsMessageVisible(myAccount.invalidUserNameOrPasswordMessage,
                         EXPECTED_INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
 
@@ -122,7 +123,7 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_EMAIL, VALID_USER_PASSWORD)
                 .clickLoginButton()
-                .helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
+                .verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -131,16 +132,22 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_EMAIL, VALID_USER_PASSWORD)
                 .clickRememberMeCheckbox()
-                .clickLoginButton();
-        cookies
+                .clickLoginButton()
+                .verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT);
+        cookiesHelper
                 .saveCookies()
-                .closeWebDriver();
-        myAccount
-                .openAuthPage();
-        cookies
+                .refresh()
+                .clearCookies();
+
+        cookiesHelper.closeWebDriver();
+        myAccount.openAuthPage();
+        cookiesHelper
                 .pasteCookies()
                 .refresh();
-        myAccount.helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
+
+        myAccount.isOnAuthPage(EXPECTED_MY_ACCOUNT_TITLE);
+        header.verifyWelcomeUserMessageAtHeader(EXPECTED_HELLO_MESSAGE_AT_HEADER_TEXT);
+        myAccount.verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT);
     }
 
     @Test
@@ -149,10 +156,17 @@ public class AuthTests extends BaseTest {
         myAccount
                 .enterCredentials(VALID_USER_EMAIL, VALID_USER_PASSWORD)
                 .clickLoginButton()
-                .helloMessageShouldBeVisible(EXPECTED_HELLO_MESSAGE_TEXT);
+                .verifyHelloMessageIsVisible(EXPECTED_HELLO_MESSAGE_TEXT);
         header
                 .clickLogoutButton()
-                .loginButtonShouldBeVisible(EXPECTED_LOGIN_BUTTON_TEXT)
+                .verifyLoginButtonVisibleInHeader(EXPECTED_LOGIN_BUTTON_TEXT)
                 .welcomeTextAtHeaderShouldNotBeVisible();
+    }
+
+    @Test
+    @DisplayName("Click on lost password link should open lost password page")
+    void clickOnLostPasswordLinkShouldOpenLostPasswordPageTest() {
+        myAccount.cklickOnForgotPasswordLink(EXPECTED_FORGOT_PASSWORD_LINK_TEXT);
+        passwordRecoveryPage.isOnPasswordRecoveryPage(EXPECTED_PASSWORD_RECOVERY_TITLE);
     }
 }

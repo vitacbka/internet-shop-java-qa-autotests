@@ -7,15 +7,17 @@ import org.openqa.selenium.Cookie;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Cookies {
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+
+public class CookiesHelper {
     private Set<Cookie> savedCookies = new HashSet<>();
 
-    public Cookies saveCookies() {
+    public CookiesHelper saveCookies() {
         savedCookies = WebDriverRunner.getWebDriver().manage().getCookies();
         return this;
     }
 
-    public Cookies pasteCookies() {
+    public CookiesHelper pasteCookies() {
         if (WebDriverRunner.hasWebDriverStarted()) {
             WebDriverRunner.getWebDriver().manage().deleteAllCookies();
             for (Cookie cookie : getSavedCookies()) {
@@ -32,8 +34,17 @@ public class Cookies {
         return this;
     }
 
-    public Cookies refresh() {
+    public CookiesHelper refresh() {
         Selenide.refresh();
+        return this;
+    }
+
+    public CookiesHelper clearCookies() {
+        if (WebDriverRunner.hasWebDriverStarted()) {
+            WebDriverRunner.getWebDriver().manage().deleteAllCookies();
+        } else {
+            System.err.println("WebDriver not started. Cannot clear cookies.");
+        }
         return this;
     }
 
@@ -41,7 +52,7 @@ public class Cookies {
         return savedCookies;
     }
 
-    public Cookies closeWebDriver() {
+    public CookiesHelper closeWebDriver() {
         if (WebDriverRunner.hasWebDriverStarted()) {
             WebDriverRunner.closeWebDriver();
         }

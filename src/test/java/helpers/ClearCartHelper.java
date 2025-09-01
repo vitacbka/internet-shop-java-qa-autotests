@@ -20,4 +20,11 @@ public class ClearCartHelper {
         cart.cartIsEmptyMessage.shouldBe(visible);
         return this;
     }
+
+    public ClearCartHelper clearCart() {
+        if (!cart.cartIsEmptyMessage.isDisplayed()) {
+            cart.removeItemFromCart();
+        }
+        return this;
+    }
 }

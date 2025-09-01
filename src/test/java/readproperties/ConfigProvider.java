@@ -15,6 +15,7 @@ public interface ConfigProvider {
     String BOOKS_CATEGORY_URL = readConfig().getString("BOOKS_CATEGORY_URL");
     String TABLETS_CATEGORY_URL = readConfig().getString("TABLETS_CATEGORY_URL");
     String CAMERAS_CATEGORY_URL = readConfig().getString("CAMERAS_CATEGORY_URL");
+    String ALL_ITEMS_PAGE_URL = readConfig().getString("ALL_ITEMS_PAGE_URL");
     String CATALOG_PAGE_URL = readConfig().getString("CATALOG_PAGE_URL");
     String CART_PAGE_URL = readConfig().getString("CART_PAGE_URL");
     String TV_CATEGORY_URL = readConfig().getString("TV_CATEGORY_URL");

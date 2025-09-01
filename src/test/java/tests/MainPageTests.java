@@ -6,10 +6,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pages.BooksCategoryPage;
-import pages.CamerasCategoryTitle;
+import pages.CamerasCategoryPage;
 import pages.MainPage;
 import pages.TabletsCategoryPage;
 import java.util.stream.Stream;
+
+import static com.codeborne.selenide.Selenide.sleep;
 import static testdata.MainPageTestData.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -17,9 +19,9 @@ public class MainPageTests extends BaseTest{
     MainPage mainPage = new MainPage();
     BooksCategoryPage booksCategoryPage = new BooksCategoryPage();
     TabletsCategoryPage tabletsCategoryPage = new TabletsCategoryPage();
-    CamerasCategoryTitle camerasCategoryTitle = new CamerasCategoryTitle();
+    CamerasCategoryPage camerasCategoryPage = new CamerasCategoryPage();
 
-    @BeforeAll
+    @BeforeEach
     void setup() {
         mainPage
                 .openMainPage()
@@ -33,19 +35,23 @@ public class MainPageTests extends BaseTest{
                 Arguments.of(mainPage.tabletsSlide, EXPECTED_TABLETS_SLIDE_TITLE,
                         tabletsCategoryPage.tabletsPageTitle, EXPECTED_TABLETS_PAGE_TITLE),
                 Arguments.of(mainPage.camerasSlide, EXPECTED_CAMERAS_SLIDE_TITLE,
-                        camerasCategoryTitle.camerasPageTitle, EXPECTED_CAMERAS_PAGE_TITLE)
+                        camerasCategoryPage.camerasPageTitle, EXPECTED_CAMERAS_PAGE_TITLE)
         );
     }
 
     @ParameterizedTest
     @MethodSource("slideDataProvider")
     @DisplayName("Click on slide should open the corresponding page")
-    void clickOnSlideShouldOpenCorrespondingPageTest(SelenideElement slide, String expectedSlideTitle,
-                                                     SelenideElement pageTitleElement, String expectedPageTitle) {
-
-        mainPage.clickOnSlide(slide, expectedSlideTitle)
+    void clickOnSlideShouldOpenCorrespondingPageTest(SelenideElement slide,
+                                                     String expectedSlideTitle,
+                                                     SelenideElement pageTitleElement,
+                                                     String expectedPageTitle)
+    {
+        mainPage
+                .openMainPage()
+                .clickOnSlide(slide, expectedSlideTitle)
                 .verifyPageTitleText(pageTitleElement, expectedPageTitle);
-//        pageTitleElement.shouldBe(Condition.visible).shouldHave(Condition.text(expectedPageTitle));
+        pageTitleElement.shouldBe(Condition.visible).shouldHave(Condition.text(expectedPageTitle));
     }
 
     private Stream<Arguments> labelsDataProvider() {
@@ -86,5 +92,14 @@ public class MainPageTests extends BaseTest{
         mainPage
                 .scrollToElement(mainPage.newArrivalTitle)
                 .labelsShouldBeVisible(mainPage.newItemLabels, EXPECTED_NEW_LABEL_TEXT);
+    }
+
+    @Test
+    @DisplayName("Click on next slide should change slide")
+    void clickOnNextSlideShouldChangeSlideTest() {
+        mainPage
+                .scrollToElement(mainPage.saleCategoryTitle)
+                .clickSaleSliderNextArrow();
+        sleep(5000);
     }
 }

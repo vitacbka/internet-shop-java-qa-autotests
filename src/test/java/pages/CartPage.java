@@ -40,15 +40,19 @@ public class CartPage {
         return this;
     }
 
-    public CartPage isOnCartPage(String title, String expectedUrl) {
+    public CartPage isOnCartPage(String title) {
         cartPageTitle.shouldBe(visible).shouldHave(text(title));
-        webdriver().shouldHave(url(expectedUrl));
+        webdriver().shouldHave(url(CART_PAGE_URL));
         return this;
     }
 
-    public CartPage itemInCartShouldBeVisible(String itemName) {
-        itemNameInCart.shouldBe(visible).shouldHave(text(itemName));
+    public CartPage verifyItemInCartVisible(String expectedItemName) {
+        itemNameInCart.shouldBe(visible).shouldHave(text(expectedItemName));
         return this;
+    }
+
+    public String getItemNameInCartText() {
+        return itemNameInCart.getText();
     }
 
     public String getItemNameInCart() {
@@ -118,44 +122,33 @@ public class CartPage {
         return this;
     }
 
-    public CartPage successfulCouponMessageShouldBeVisible(String message) {
+    public CartPage verifySuccessfulCouponMessage(String message) {
         successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
         return this;
     }
 
-    public CartPage invalidCouponMessageShouldBeVisible(String message) {
+    public CartPage verifyInvalidCouponMessage(String message) {
         errorCouponMessage.shouldBe(visible);
         return this;
     }
 
-    public CartPage couponMessage(SelenideElement element, String expectedText) {
-        element.shouldBe(visible)
-                .shouldHave(text(expectedText));
-        return this;
-    }
-
-    public CartPage emptyCouponMessageShouldBeVisible(String message) {
+    public CartPage verifyEmptyCouponMessage(String message) {
         emptyCouponMessage.shouldBe(visible);
         return this;
     }
 
-    public CartPage deletedCouponMessageShouldBeVisible(String message) {
-        deletedCouponMessage.shouldBe(visible);
+    public CartPage verifyDeletedCouponMessage(String message) {
+        deletedCouponMessage.shouldBe(visible, Duration.ofSeconds(6));
         return this;
     }
 
-    public CartPage cartIsEmptyMessageShouldBeVisible(String message) {
-        cartIsEmptyMessage.shouldBe(visible).shouldHave(text(message));
+    public CartPage verifyEmptyCartMessage(String message) {
+        cartIsEmptyMessage.shouldBe(visible,Duration.ofSeconds(10)).shouldHave(text(message));
         return this;
     }
 
-    public CartPage alreadyApplyCouponMessageShouldBeVisible(String message) {
-        couponAlreadyAppliedMessage.shouldBe(visible);
-        return this;
-    }
-
-    public CartPage successfulApplyCouponMessage(String message) {
-        successfulCouponMessage.shouldBe(visible).shouldHave(text(message));
+    public CartPage veifyAlreadyApplyCouponMessage(String message) {
+        couponAlreadyAppliedMessage.shouldBe(visible, Duration.ofSeconds(10));
         return this;
     }
 }

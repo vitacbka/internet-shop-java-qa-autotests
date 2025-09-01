@@ -12,6 +12,7 @@ import pages.MainPage;
 import pages.PlaceAnOrderPage;
 
 import java.util.stream.Stream;
+
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,35 +31,35 @@ public class FooterTests extends BaseTest {
     CartPage cartPage = new CartPage();
 
     @BeforeEach
-    void setup() {
+    void openMainPage() {
         mainPage.openMainPage();
     }
 
     @Test
     @DisplayName("Contact information in footer should be displayed")
     void checkContactInfoInFooter() {
-        footerPage.contactInFooterShouldBeVisible(EXPECTED_FOOTER_TEXT);
+        footerPage.verifyContactInfoFooter(EXPECTED_FOOTER_TEXT);
     }
 
     @Test
     @DisplayName("All page links should be displayed at footer")
     void allFooterPageLinksShouldBeVisibleAndCorrectText() {
-        footerPage.allFooterLinksShouldBeVisible(All_FOOTER_TEXTS_LINKS);
+        footerPage.verifyVisibleAllFooterLinks(All_FOOTER_TEXTS_LINKS);
     }
 
     @Test
     @DisplayName("Widget Links title should be displayed at footer")
     void widgetLinksTitleShouldBeDisplayedAtFooter() {
-        footerPage.widgetLinksTitleInFooterShouldBeVisible(WIDGET_LINKS_TITLE);
+        footerPage.verifyWidgetLinkDisplayed(WIDGET_LINKS_TITLE);
     }
 
     static Stream<Arguments> footerLinksProvider() {
         return Stream.of(
-                Arguments.of("Все товары", "https://intershop5.skillbox.ru/shop/"),
-                Arguments.of("Главная", "https://intershop5.skillbox.ru/"),
-                Arguments.of("Корзина", "https://intershop5.skillbox.ru/cart/"),
-                Arguments.of("Мой аккаунт", "https://intershop5.skillbox.ru/my-account/"),
-                Arguments.of("Регистрация", "https://intershop5.skillbox.ru/register/")
+                Arguments.of("Все товары", ALL_ITEMS_PAGE_URL),
+                Arguments.of("Главная", BASE_URL),
+                Arguments.of("Корзина", CART_PAGE_URL),
+                Arguments.of("Мой аккаунт", MY_ACCOUNT_PAGE_URL),
+                Arguments.of("Регистрация", REGISTRATION_PAGE_URL)
         );
     }
 
@@ -74,7 +75,7 @@ public class FooterTests extends BaseTest {
     static Stream<Arguments> checkoutLinkProvider() {
         return Stream.of(
                 Arguments.arguments(named("Item in cart", true)),
-                Arguments.arguments(named("Cart os empty", false))
+                Arguments.arguments(named("Cart is empty", false))
         );
     }
 
@@ -82,17 +83,17 @@ public class FooterTests extends BaseTest {
     @MethodSource("checkoutLinkProvider")
     @DisplayName("Should redirect from checkout to cart if empty, or open checkout if has items")
     void shouldRedirectCheckoutBasedOnCartState(boolean isCartNotEmpty) {
-
         footerPage.footerWidgetLinksTitle.scrollIntoView(true);
         if (isCartNotEmpty) {
-            addToCartHelper.addPhoneAtCart();
+            addToCartHelper.addPhoneToCart();
         }
-       footerPage.clickOnPlaceAnOrderLink();
+
+        footerPage.clickOnPlaceAnOrderLink();
 
         if (isCartNotEmpty) {
             placeAnOrderPage.isOnPlaceAnOrderPage(EXPECTED_PLACE_AN_ORDER_PAGE_TITLE, PLACE_AN_ORDER_URL);
         } else {
-            cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE, CART_PAGE_URL);
+            cartPage.isOnCartPage(EXPECTED_CART_PAGE_TITLE);
         }
     }
 }

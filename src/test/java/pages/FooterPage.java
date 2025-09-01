@@ -7,7 +7,6 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.files.DownloadActions.click;
 
 public class FooterPage {
 
@@ -18,7 +17,7 @@ public class FooterPage {
 
     public ElementsCollection footerPageLinks = $$("#pages-2 ul li a");
 
-    public void contactInFooterShouldBeVisible(String expectedText) {
+    public void verifyContactInfoFooter(String expectedText) {
         footerContactInfo.scrollTo()
                 .shouldBe(visible)
                 .shouldHave(text(expectedText));
@@ -29,17 +28,19 @@ public class FooterPage {
         return this;
     }
 
-    public void widgetLinksTitleInFooterShouldBeVisible(String expectedTitle) {
+    public FooterPage verifyWidgetLinkDisplayed(String expectedTitle) {
         footerWidgetLinksTitle
                 .scrollTo()
                 .shouldBe(visible)
                 .shouldHave(text(expectedTitle));
+        return this;
     }
 
-    public void allFooterLinksShouldBeVisible(String[] expectedLinkTexts) {
+    public FooterPage verifyVisibleAllFooterLinks(String[] expectedLinkTexts) {
         footerWidgetLinksTitle.scrollTo();
         footerPageLinks.shouldHave(CollectionCondition.size(expectedLinkTexts.length));
         footerPageLinks.forEach(el -> el.shouldBe(visible));
         footerPageLinks.shouldHave(CollectionCondition.texts(expectedLinkTexts));
+        return this;
     }
 }

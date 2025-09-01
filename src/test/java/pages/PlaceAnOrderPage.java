@@ -114,6 +114,7 @@ public class PlaceAnOrderPage {
     // Сумма цен всех товаров
     public double getSumOfProductPrices() throws ParseException {
         double sum = 0;
+
         for (SelenideElement priceElement : productPrices) {
             sum += parsePrice(priceElement.getText());
         }

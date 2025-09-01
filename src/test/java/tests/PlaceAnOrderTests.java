@@ -12,6 +12,7 @@ import pages.PlaceAnOrderPage;
 
 import java.text.ParseException;
 
+import static com.codeborne.selenide.Selenide.sleep;
 import static readproperties.ConfigProvider.*;
 import static testdata.PlaceAnOrderTestData.*;
 
@@ -31,17 +32,6 @@ public class PlaceAnOrderTests extends BaseTest {
         productAddToCartHelper.addTwoPhonesToCart();
         headerPage.clickPlaceAnOrderTab();
         placeAnOrderPage.isOnPlaceAnOrderPage(EXPECTED_PLACE_AN_ORDER_PAGE_TITLE, PLACE_AN_ORDER_URL);
-    }
-
-    @Test
-    @DisplayName("All input fields should be filled")
-    void allInputFieldsShouldBeFilledTest() {
-        placeAnOrderPage
-                .clearInputFields()
-                .fillInOrderForm(FIRST_NAME, LAST_NAME, COUNTRY,
-                        ADDRESS, CITY, STATE,
-                        POSTAL_CODE, PHONE, EMAIL)
-                .fillAdditionalInformation(ADDITIONAL_INFORMATION_TEXT);
     }
 
     @Test

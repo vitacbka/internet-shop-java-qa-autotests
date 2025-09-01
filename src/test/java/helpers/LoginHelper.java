@@ -8,8 +8,9 @@ public class LoginHelper {
     MyAccountPage myAccountPage = new MyAccountPage();
 
     public void loginWithValidUserLogin() {
-        myAccountPage.openAuthPage();
-        myAccountPage.enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD);
-        myAccountPage.clickLoginButton();
+        myAccountPage
+                .openAuthPage()
+                .enterCredentials(VALID_USER_LOGIN, VALID_USER_PASSWORD)
+                .clickLoginButton();
     }
 }

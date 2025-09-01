@@ -3,13 +3,9 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.mifmif.common.regex.Main;
-
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static readproperties.ConfigProvider.BASE_URL;
 
 public class MainPage {
@@ -20,11 +16,18 @@ public class MainPage {
             tabletsSlide = $("#accesspress_storemo-3 .widget-title"),
             camerasSlide = $("#accesspress_storemo-4 .widget-title"),
             saleCategoryTitle = $("#accesspress_store_product-2 h2.prod-title"),
-            newArrivalTitle = $x("(//h2[@class='prod-title'])[2]");
+            newArrivalTitle = $x("(//h2[@class='prod-title'])[2]"),
+
+    // Локаторы для стрелок
+             saleSliderNextArrow = $("#accesspress_store_product-2 .slick-next"),
+             saleSliderPrevArrow = $("#accesspress_store_product-2 .slick-prev"),
+             newArrivalSliderNextArrow = $("#accesspress_store_product-3 .slick-next"),
+             newArrivalSliderPrevArrow = $("#accesspress_store_product-3 .slick-prev");
+
 
     public ElementsCollection
-            saleLabels = $$x("//aside[@id='accesspress_store_product-2']//li[not(contains(@class, 'slick-cloned'))]//span[@class='onsale']"),
-            newItemLabels = $$("aside#accesspress_store_product-3 ul.new-prod-slide li .label-new");
+            saleLabels = $$("aside#accesspress_store_product-2 li:not(.slick-cloned) span.onsale"),
+            newItemLabels = $$("aside#accesspress_store_product-3 li:not(.slick-cloned) span.label-new");
 
 
     public MainPage openMainPage() {
@@ -65,36 +68,19 @@ public class MainPage {
                 .shouldBe(visible);
         return this;
     }
-    //Getters
-    public SelenideElement getMainPageTitle() {
-        return mainPageTitle;
+
+    public void hoverAndClickSlider(SelenideElement slider, SelenideElement arrow) {
+        slider.hover();
+        arrow.shouldBe(visible, enabled).click();
     }
 
-    public SelenideElement getBooksSlide() {
-        return booksSlide;
+    public MainPage clickSaleSliderNextArrow() {
+        hoverAndClickSlider(saleSliderNextArrow, saleSliderNextArrow );
+        return this;
     }
 
-    public SelenideElement getTabletsSlide() {
-        return tabletsSlide;
-    }
-
-    public SelenideElement getCamerasSlide() {
-        return camerasSlide;
-    }
-
-    public SelenideElement getSaleCategoryTitle() {
-        return saleCategoryTitle;
-    }
-
-    public ElementsCollection getSaleLabels() {
-        return saleLabels;
-    }
-
-    public SelenideElement getNewArrivalTitle() {
-        return newArrivalTitle;
-    }
-
-    public ElementsCollection getNewItemLabels() {
-        return newItemLabels;
+    public MainPage clickSaleSlidePrevArrow() {
+        hoverAndClickSlider(saleSliderPrevArrow, saleSliderPrevArrow);
+        return this;
     }
 }
